@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Flujo BPMN Detallado - EcoWash</title>
+    <!-- JointJS CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.min.css" />
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f8; padding: 20px; }
+        h2 { text-align: center; color: #333; }
+        #canvas { width: 1000px; height: 600px; border: 1px solid #c0c0c0; background-color: white; margin: 0 auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+    <h2>Flujo de Proceso BPMN con Piscinas - EcoWash</h2>
+    <div id="canvas"></div>
+
+    <!-- Dependencias de JointJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.1/backbone-min.js"></script>
+    <!-- JointJS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.7/joint.min.js"></script>
+
+    <script>
+        var namespace = joint.shapes;
+        var graph = new joint.dia.Graph({}, { cellNamespace: namespace });
+        var paper = new joint.dia.Paper({
+            el: document.getElementById('canvas'),
+            model: graph,
+            width: 1000,
+            height: 600,
+            gridSize: 10,
+            drawGrid: true,
+            background: { color: '#ffffff' },
+            cellNamespace: namespace
+        });
+
+        // 1. CREACIÓN DE PISCINAS (SWIMLANES)
+        var poolCliente = new joint.shapes.standard.Rectangle({
+            position: { x: 10, y: 10 },
+            size: { width: 980, height: 260 },
+            attrs: { 
+                body: { fill: '#fafafa', stroke: '#d9d9d9', strokeWidth: 2 }, 
+                label: { text: 'PISCINA: CLIENTE WEB\n(HTML, Thymeleaf, Spring Security)', fill: '#333', refX: 15, refY: 15, textAnchor: 'start', fontWeight: 'bold' } 
+            }
+        });
+
+        var poolAdmin = new joint.shapes.standard.Rectangle({
+            position: { x: 10, y: 280 },
+            size: { width: 980, height: 300 },
+            attrs: { 
+                body: { fill: '#f0f5ff', stroke: '#adc6ff', strokeWidth: 2 }, 
+                label: { text: 'PISCINA: ADMINISTRADOR\n(Aplicación de Escritorio Electron)', fill: '#0050b3', refX: 15, refY: 15, textAnchor: 'start', fontWeight: 'bold' } 
+            }
+        });
+
+        // 2. NODOS DEL CLIENTE WEB
+        var startCliente = new joint.shapes.standard.Circle({
+            position: { x: 50, y: 100 }, size: { width: 40, height: 40 },
+            attrs: { body: { fill: '#90EE90', stroke: '#006400', strokeWidth: 2 }, label: { text: 'Cliente llega\ncon ropa', dy: 40 } }
+        });
+
+        var taskLoginWeb = new joint.shapes.standard.Rectangle({
+            position: { x: 380, y: 80 }, size: { width: 130, height: 70 },
+            attrs: { body: { fill: '#FFF1F0', rx: 5, ry: 5, stroke: '#FF4D4F' }, label: { text: 'Inicia Sesión en Web\ny consulta estado', fill: '#333', fontSize: 12 } }
+        });
+
+        var taskVerListo = new joint.shapes.standard.Rectangle({
+            position: { x: 620, y: 80 }, size: { width: 130, height: 70 },
+            attrs: { body: { fill: '#FFF1F0', rx: 5, ry: 5, stroke: '#FF4D4F' }, label: { text: 'Ve estado "Listo"\nen Dashboard HTML', fill: '#333', fontSize: 12 } }
+        });
+
+        var endCliente = new joint.shapes.standard.Circle({
+            position: { x: 880, y: 100 }, size: { width: 40, height: 40 },
+            attrs: { body: { fill: '#FFCCCC', stroke: '#8B0000', strokeWidth: 4 }, label: { text: 'Recoge ropa\n(Fin)', dy: 40 } }
+        });
+
+        // 3. NODOS DEL ADMINISTRADOR (ELECTRON)
+        var taskRecepElectron = new joint.shapes.standard.Rectangle({
+            position: { x: 150, y: 350 }, size: { width: 130, height: 70 },
+            attrs: { body: { fill: '#E6F7FF', rx: 5, ry: 5, stroke: '#1890FF' }, label: { text: 'Recibe prendas\ny pesa', fill: '#333', fontSize: 12 } }
+        });
+
+        var taskCrearPedido = new joint.shapes.standard.Rectangle({
+            position: { x: 330, y: 350 }, size: { width: 130, height: 70 },
+            attrs: { body: { fill: '#E6F7FF', rx: 5, ry: 5, stroke: '#1890FF' }, label: { text: 'Crea Pedido en\nElectron (Spring JPA)', fill: '#333', fontSize: 12 } }
+        });
+
+        var taskActualizaEstado = new joint.shapes.standard.Rectangle({
+            position: { x: 450, y: 480 }, size: { width: 130, height: 70 },
+            attrs: { body: { fill: '#E6F7FF', rx: 5, ry: 5, stroke: '#1890FF' }, label: { text: 'Lavado en proceso\n(Actualiza DB)', fill: '#333', fontSize: 12 } }
+        });
+
+        var taskMarcaListo = new joint.shapes.standard.Rectangle({
+            position: { x: 620, y: 350 }, size: { width: 130, height: 70 },
+            attrs: { body: { fill: '#E6F7FF', rx: 5, ry: 5, stroke: '#1890FF' }, label: { text: 'Marca pedido\ncomo "Listo"', fill: '#333', fontSize: 12 } }
+        });
+
+        var taskEntregaApp = new joint.shapes.standard.Rectangle({
+            position: { x: 830, y: 350 }, size: { width: 130, height: 70 },
+            attrs: { body: { fill: '#E6F7FF', rx: 5, ry: 5, stroke: '#1890FF' }, label: { text: 'Entrega física y\nCierra el Pedido', fill: '#333', fontSize: 12 } }
+        });
+
+        // 4. FUNCION PARA ENLACES
+        function createLink(source, target, label, isDashed) {
+            var link = new joint.shapes.standard.Link({
+                source: { id: source.id }, target: { id: target.id },
+                attrs: { 
+                    line: { stroke: '#555', strokeWidth: 2, strokeDasharray: isDashed ? '5,5' : '0', targetMarker: { 'type': 'path', 'd': 'M 10 -5 0 0 10 5 Z' } }
+                }
+            });
+            if (label) {
+                link.appendLabel({ attrs: { text: { text: label, fill: '#000', fontSize: 11, background: 'white' } } });
+            }
+            return link;
+        }
+
+        // Agregar todo al Canvas
+        graph.addCells([
+            poolCliente, poolAdmin,
+            startCliente, taskLoginWeb, taskVerListo, endCliente,
+            taskRecepElectron, taskCrearPedido, taskActualizaEstado, taskMarcaListo, taskEntregaApp,
+            
+            // Flujo Inicial Cliente a Admin
+            createLink(startCliente, taskRecepElectron, 'Entrega prendas', true),
+
+            // Flujo interno Administrador (Secuencia)
+            createLink(taskRecepElectron, taskCrearPedido),
+            createLink(taskCrearPedido, taskActualizaEstado),
+            createLink(taskActualizaEstado, taskMarcaListo),
+            createLink(taskMarcaListo, taskEntregaApp),
+
+            // Flujo de BD/Backend entre Electron y Web (Líneas punteadas indican envío de mensajes/datos)
+            createLink(taskCrearPedido, taskLoginWeb, 'Base de Datos\nDisponible', true),
+            createLink(taskMarcaListo, taskVerListo, 'Sincronización JPA', true),
+
+            // Flujo Final: Cliente recoge
+            createLink(taskVerListo, endCliente),
+            createLink(taskEntregaApp, endCliente, 'Firma entrega', true)
+        ]);
+
+        // Asegurar que las piscinas queden en el fondo para que los nodos sean clickeables
+        poolCliente.toBack();
+        poolAdmin.toBack();
+
+    </script>
+</body>
+</html>
