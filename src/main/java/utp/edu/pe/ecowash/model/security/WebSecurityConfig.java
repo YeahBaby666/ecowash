@@ -27,7 +27,7 @@ public class WebSecurityConfig {
             )
             .formLogin(form -> form
                 // Si planeas usar una página de login personalizada en Thymeleaf, indícala aquí
-                // .loginPage("/login") 
+                .loginPage("/login") 
                 .permitAll() // Permite a todos acceder a la página de login
             )
             .logout(logout -> logout
