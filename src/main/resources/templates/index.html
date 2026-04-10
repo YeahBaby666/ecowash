@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoWash - Portal Web Cliente</title>
+    <style>
+        :root {
+            --primary-color: #28a745;
+            --secondary-color: #155d27;
+            --bg-color: #f4f9f4;
+            --text-color: #333;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background-color: var(--bg-color); 
+            color: var(--text-color);
+        }
+        header {
+            background-color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .badge-cliente {
+            font-size: 0.8rem;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: normal;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--secondary-color);
+            margin-left: 1rem;
+            font-weight: 500;
+        }
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: linear-gradient(rgba(244, 249, 244, 0.9), rgba(244, 249, 244, 0.9)), url('https://images.unsplash.com/photo-1545173168-9f1947eebb7f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        .tracker-form {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .tracker-form input[type="text"] {
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 25px;
+            width: 300px;
+            max-width: 100%;
+            outline: none;
+        }
+        .tracker-form input[type="text"]:focus {
+            border-color: var(--primary-color);
+        }
+        .tracker-form button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .tracker-form button:hover {
+            background-color: var(--secondary-color);
+        }
+        .educational {
+            padding: 4rem 2rem;
+            text-align: center;
+            background-color: white;
+        }
+        .educational h2 {
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+        }
+        .cards {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .card {
+            background: var(--bg-color);
+            padding: 2rem;
+            border-radius: 10px;
+            width: 250px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary-color);
+        }
+        .card h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--secondary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            🌿 EcoWash 
+            <span class="badge-cliente">Portal Cliente</span>
+        </div>
+        <nav class="nav-links">
+            <a th:href="@{/login}">Iniciar Sesión</a>
+            <a th:href="@{/registro}">Registrarse</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Sección de Rastreo -->
+        <section class="hero">
+            <h1>Rastrea tus prendas en tiempo real</h1>
+            <p>Ingresa tu número de ticket para conocer el estado actual de tu servicio de lavado.</p>
+            
+            <!-- Formulario visual, sin envío de datos reales aún -->
+            <form action="#" method="get" class="tracker-form">
+                <input type="text" placeholder="Ej. TCK-00123" required />
+                <button type="submit">Consultar Estado</button>
+            </form>
+        </section>
+
+        <!-- Sección Educativa (Decorado) -->
+        <section class="educational">
+            <h2>¿Por qué elegir un lavado ecológico?</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>💧 Ahorro de Agua</h3>
+                    <p>Nuestras máquinas de alta eficiencia reducen el consumo de agua en un 40% comparado con el lavado tradicional.</p>
+                </div>
+                <div class="card">
+                    <h3>🌱 Biodegradable</h3>
+                    <p>Utilizamos detergentes e insumos 100% amigables con el medio ambiente, protegiendo nuestros ríos y mares.</p>
+                </div>
+                <div class="card">
+                    <h3>👕 Cuidado Textil</h3>
+                    <p>Fórmulas suaves que alargan la vida útil de tus prendas, reduciendo el impacto de la moda desechable.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 EcoWash. Cuidando tu ropa y el planeta.</p>
+    </footer>
+
+</body>
+</html>

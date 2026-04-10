@@ -21,7 +21,7 @@ public class WebSecurityConfig {
         http
             .authorizeHttpRequests(authorize -> authorize
                 // Rutas públicas que no requieren autenticación (estilos, scripts, imágenes y páginas públicas)
-                .requestMatchers("/", "/inicio", "/css/**", "/js/**", "/img/**").permitAll()
+                .requestMatchers("/", "/inicio", "/login", "/registro", "/css/**", "/js/**", "/img/**").permitAll()
                 // Cualquier otra solicitud requiere que el usuario esté autenticado
                 .anyRequest().authenticated()
             )

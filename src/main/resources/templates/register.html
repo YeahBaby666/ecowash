@@ -17,8 +17,8 @@
 <div class="auth-container">
     <h2>Crear Cuenta</h2>
     
-    <!-- Por ahora este formulario no procesa datos ya que no hay JPA implementado, solo es visual -->
-    <form action="#" method="post">
+    <!-- Formulario que procesa el registro y guarda en la base de datos -->
+    <form th:action="@{/registro}" method="post">
         <div class="form-group">
             <label for="nombre">Nombre Completo:</label>
             <input type="text" id="nombre" name="nombre" required />
