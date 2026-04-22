@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Contacto - EcoWash</title>
+
+<style>
+:root {
+    --primary-color: #28a745;
+    --secondary-color: #155d27;
+    --text-color: #333;
+}
+
+/* BODY */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    color: var(--text-color);
+    background: linear-gradient(135deg, #f4f9f4, #eef7ee);
+}
+
+/* HEADER */
+header {
+    background: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--secondary-color);
+    margin-left: 1rem;
+    font-weight: 500;
+}
+
+/* SECTION */
+.contact-section {
+    padding: 5rem 2rem;
+    text-align: center;
+}
+
+.contact-container {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+/* TARJETAS */
+.contact-form,
+.contact-info {
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+}
+
+/* FORMULARIO (PROTAGONISTA) */
+.contact-form {
+    background: white;
+    width: 380px;
+    transform: scale(1.03);
+}
+
+/* PANEL INFO (DIFERENTE) */
+.contact-info {
+    width: 260px;
+    background: linear-gradient(135deg, #28a745, #34d058);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* TITULO CON LINEA */
+.contact-form h3 {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.contact-form h3::after {
+    content: "";
+    width: 40px;
+    height: 3px;
+    background: var(--primary-color);
+    display: block;
+    margin-top: 8px;
+    border-radius: 2px;
+}
+
+/* INPUTS */
+.input-group {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.input-group input,
+.input-group textarea {
+    width: 100%;
+    padding: 14px 12px;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    background: #fafafa;
+    outline: none;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+.input-group textarea {
+    height: 120px;
+    resize: none;
+}
+
+.input-group label {
+    position: absolute;
+    left: 12px;
+    top: 14px;
+    color: #777;
+    font-size: 0.9rem;
+    transition: 0.3s;
+    pointer-events: none;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+    border-color: var(--primary-color);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(40,167,69,0.1);
+}
+
+.input-group input:focus + label,
+.input-group input:valid + label,
+.input-group textarea:focus + label,
+.input-group textarea:valid + label {
+    top: -8px;
+    left: 10px;
+    background: white;
+    padding: 0 5px;
+    font-size: 0.75rem;
+    color: var(--primary-color);
+}
+
+/* BOTÓN */
+.contact-form button {
+    width: 100%;
+    background: linear-gradient(135deg, #28a745, #34d058);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.contact-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+/* INFO ITEMS */
+.contact-info h3,
+.contact-info h4 {
+    color: white;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+}
+
+.contact-info p {
+    margin: 0;
+}
+
+/* REDES */
+.socials {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.9rem;
+}
+
+/* MENSAJE */
+.success-msg {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    display: none;
+    margin-top: 10px;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 2rem;
+    background: var(--secondary-color);
+    color: white;
+    margin-top: 3rem;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">🌿 EcoWash</div>
+    <nav class="nav-links">
+        <a th:href="@{/}">Inicio</a>
+        <a th:href="@{/login}">Login</a>
+        <a th:href="@{/registro}">Registrarse</a>
+        <a th:href="@{/contacto}">Contacto</a>
+    </nav>
+</header>
+
+<section class="contact-section">
+    <h1>Contáctanos</h1>
+    <p>¿Tienes dudas o quieres más información? Escríbenos 🌱</p>
+
+    <div class="contact-container">
+
+        <!-- FORM -->
+        <form class="contact-form" onsubmit="mostrarMensaje(event)">
+            <h3>Envíanos un mensaje</h3>
+
+            <div class="input-group">
+                <input type="text" required>
+                <label>Tu nombre</label>
+            </div>
+
+            <div class="input-group">
+                <input type="email" required>
+                <label>Tu correo</label>
+            </div>
+
+            <div class="input-group">
+                <textarea required></textarea>
+                <label>Tu mensaje</label>
+            </div>
+
+            <button type="submit">Enviar Mensaje</button>
+            <p class="success-msg" id="msg">Mensaje enviado correctamente</p>
+        </form>
+
+        <!-- INFO -->
+        <div class="contact-info">
+            <h3>Información</h3>
+
+            <div class="info-item">📍 Ubicación <span>Lima, Perú</span></div>
+            <div class="info-item">📞 Numero <span>+51 999 999 999</span></div>
+            <div class="info-item">✉ <span>contacto@ecowash.com</span></div>
+
+            <h4>🌐 Síguenos</h4>
+            <div class="socials">
+                <span>Facebook</span>
+                <span>Instagram</span>
+                <span>WhatsApp</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2024 EcoWash</p>
+</footer>
+
+<script>
+function mostrarMensaje(e) {
+    e.preventDefault();
+    document.getElementById("msg").style.display = "block";
+}
+</script>
+
+</body>
+</html>

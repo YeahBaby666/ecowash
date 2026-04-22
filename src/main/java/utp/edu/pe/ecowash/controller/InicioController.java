@@ -47,6 +47,10 @@ public class InicioController {
         // Devuelve el archivo src/main/resources/templates/register.html
         return "register"; 
     }
+    @GetMapping("/contacto")
+        public String contacto() {
+        return "contacto";
+    }
 
     /**
      * Función POST para procesar el registro y guardar en la base de datos.
