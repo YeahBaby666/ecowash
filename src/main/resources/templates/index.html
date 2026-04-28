@@ -1,26 +1,41 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <title>EcoWash - Portal Web Cliente</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300;1,9..144,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300;1,9..144,600&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/perfilModal.css}" />
     <style>
         :root {
-            --ink:    #1a2218;
+            --ink: #1a2218;
             --forest: #1e4d2b;
-            --moss:   #3a7d50;
-            --leaf:   #5cb175;
-            --mist:   #e8f2eb;
-            --cream:  #f5f0e8;
-            --sand:   #ede8de;
-            --white:  #ffffff;
-            --muted:  #6b7f6e;
+            --moss: #3a7d50;
+            --leaf: #5cb175;
+            --mist: #e8f2eb;
+            --cream: #f5f0e8;
+            --sand: #ede8de;
+            --white: #ffffff;
+            --muted: #6b7f6e;
             --border: #d4e3d8;
         }
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             font-family: 'DM Sans', sans-serif;
@@ -31,36 +46,126 @@
 
         /* ── HEADER ── */
         header {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            display: flex; justify-content: space-between; align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 1.1rem 2.5rem;
-            background: rgba(245,240,232,0.88);
+            background: rgba(245, 240, 232, 0.88);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
         }
+
+        /* ── BOTON MI PERFIL ELEGANTE (Estilo Editorial) ── */
+        .profile-btn-elegant {
+            margin-left: 1.4rem;
+            /* Mismo margen que tus enlaces nav a */
+            background: transparent;
+            border: none;
+            padding: 0;
+            font-family: 'Fraunces', serif;
+            font-size: 1.15rem;
+            /* Un poco más grande para darle jerarquía */
+            font-weight: 600;
+            color: var(--forest, #1e4d2b);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            /* Alineación vertical para que no flote más arriba que los textos DM Sans */
+            vertical-align: middle;
+        }
+
+        .profile-btn-elegant em {
+            font-style: italic;
+            color: var(--moss, #3a7d50);
+            font-weight: 300;
+            margin-left: 4px;
+            transition: color 0.3s ease;
+        }
+
+        /* Efecto Hover sutil y orgánico */
+        .profile-btn-elegant:hover {
+            transform: translateY(-2px);
+        }
+
+        .profile-btn-elegant:hover em {
+            color: var(--leaf, #5cb175);
+            /* Brillo sutil en la parte cursiva */
+        }
+
+        /* Ajuste al botón Salir para que mantenga alineación con el nuevo botón */
+        .logout-form button {
+            vertical-align: middle;
+        }
+
+        /* CSS para que el botón de salir luzca como un enlace normal */
+        .logout-form {
+            display: inline;
+            margin-left: 1.4rem;
+        }
+
+        .logout-form button {
+            background: none;
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--muted);
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 0;
+        }
+
+        .logout-form button:hover {
+            color: var(--forest);
+        }
+
+
+
         .logo {
             font-family: 'Fraunces', serif;
-            font-size: 1.5rem; font-weight: 700;
+            font-size: 1.5rem;
+            font-weight: 700;
             color: var(--forest);
             letter-spacing: -0.5px;
-            display: flex; align-items: center; gap: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .logo em { font-style: italic; color: var(--moss); }
+
+        .logo em {
+            font-style: italic;
+            color: var(--moss);
+        }
+
         .badge-cliente {
             font-family: 'DM Sans', sans-serif;
-            font-size: 0.72rem; font-weight: 500;
-            background: var(--forest); color: var(--mist);
-            padding: 3px 10px; border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 500;
+            background: var(--forest);
+            color: var(--mist);
+            padding: 3px 10px;
+            border-radius: 20px;
             letter-spacing: 0.3px;
         }
+
         nav a {
             margin-left: 1.4rem;
             text-decoration: none;
-            font-size: 0.875rem; font-weight: 500;
+            font-size: 0.875rem;
+            font-weight: 500;
             color: var(--muted);
             transition: color 0.2s;
         }
-        nav a:hover { color: var(--forest); }
+
+        nav a:hover {
+            color: var(--forest);
+        }
 
         /* ── HERO ── */
         .hero {
@@ -70,31 +175,53 @@
             padding-top: 72px;
             overflow: hidden;
         }
+
         .hero-left {
-            display: flex; flex-direction: column; justify-content: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             padding: 5rem 3.5rem 5rem 5rem;
         }
+
         .hero-eyebrow {
-            display: inline-flex; align-items: center; gap: 8px;
-            font-size: 0.75rem; font-weight: 500; letter-spacing: 3px;
-            text-transform: uppercase; color: var(--moss);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--moss);
             margin-bottom: 1.5rem;
-            opacity: 0; animation: fadeUp 0.7s 0.1s forwards;
+            opacity: 0;
+            animation: fadeUp 0.7s 0.1s forwards;
         }
+
         .hero-eyebrow::before {
             content: '';
-            display: inline-block; width: 24px; height: 1.5px;
+            display: inline-block;
+            width: 24px;
+            height: 1.5px;
             background: var(--moss);
         }
+
         .hero-title {
             font-family: 'Fraunces', serif;
             font-size: clamp(2.8rem, 4.5vw, 4.2rem);
-            font-weight: 700; line-height: 1.06;
-            color: var(--forest); letter-spacing: -1.5px;
+            font-weight: 700;
+            line-height: 1.06;
+            color: var(--forest);
+            letter-spacing: -1.5px;
             margin-bottom: 1.8rem;
-            opacity: 0; animation: fadeUp 0.7s 0.25s forwards;
+            opacity: 0;
+            animation: fadeUp 0.7s 0.25s forwards;
         }
-        .hero-title em { font-style: italic; font-weight: 300; color: var(--moss); }
+
+        .hero-title em {
+            font-style: italic;
+            font-weight: 300;
+            color: var(--moss);
+        }
 
         /* TRACKER DENTRO DEL HERO */
         .tracker-box {
@@ -103,16 +230,24 @@
             border-radius: 20px;
             padding: 1.8rem;
             margin-bottom: 2rem;
-            opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
+            opacity: 0;
+            animation: fadeUp 0.7s 0.4s forwards;
         }
+
         .tracker-label {
-            font-size: 0.75rem; font-weight: 500; letter-spacing: 2px;
-            text-transform: uppercase; color: var(--muted);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
             margin-bottom: 0.9rem;
         }
+
         .tracker-form {
-            display: flex; gap: 0.6rem;
+            display: flex;
+            gap: 0.6rem;
         }
+
         .tracker-form input[type="text"] {
             flex: 1;
             padding: 0.75rem 1.1rem;
@@ -125,96 +260,184 @@
             outline: none;
             transition: border-color 0.2s, background 0.2s;
         }
+
         .tracker-form input[type="text"]:focus {
             border-color: var(--moss);
             background: var(--white);
         }
-        .tracker-form input::placeholder { color: #aabcb0; }
+
+        .tracker-form input::placeholder {
+            color: #aabcb0;
+        }
+
         .tracker-form button {
             padding: 0.75rem 1.4rem;
             font-family: 'DM Sans', sans-serif;
-            font-size: 0.88rem; font-weight: 600;
-            background: var(--forest); color: var(--white);
-            border: none; border-radius: 12px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            background: var(--forest);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
             cursor: pointer;
             transition: background 0.2s, transform 0.15s;
             white-space: nowrap;
         }
-        .tracker-form button:hover { background: var(--moss); transform: scale(1.02); }
+
+        .tracker-form button:hover {
+            background: var(--moss);
+            transform: scale(1.02);
+        }
 
         .hero-links {
-            display: flex; gap: 1rem; flex-wrap: wrap;
-            opacity: 0; animation: fadeUp 0.7s 0.55s forwards;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.7s 0.55s forwards;
         }
+
         .hero-btn-primary {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            background: var(--leaf); color: var(--forest);
-            padding: 0.8rem 1.6rem; border-radius: 50px;
-            text-decoration: none; font-size: 0.9rem; font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--leaf);
+            color: var(--forest);
+            padding: 0.8rem 1.6rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
             transition: background 0.2s, transform 0.2s;
         }
-        .hero-btn-primary:hover { background: var(--moss); color: white; transform: translateY(-2px); }
+
+        .hero-btn-primary:hover {
+            background: var(--moss);
+            color: white;
+            transform: translateY(-2px);
+        }
+
         .hero-btn-ghost {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            border: 1.5px solid var(--border); color: var(--forest);
-            padding: 0.8rem 1.6rem; border-radius: 50px;
-            text-decoration: none; font-size: 0.9rem; font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1.5px solid var(--border);
+            color: var(--forest);
+            padding: 0.8rem 1.6rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
             transition: border-color 0.2s, transform 0.2s;
         }
-        .hero-btn-ghost:hover { border-color: var(--moss); transform: translateY(-2px); }
+
+        .hero-btn-ghost:hover {
+            border-color: var(--moss);
+            transform: translateY(-2px);
+        }
 
         /* LADO DERECHO DEL HERO */
         .hero-right {
             background: var(--forest);
-            position: relative; overflow: hidden;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             padding: 4rem 3rem;
             gap: 1.2rem;
         }
+
         .hero-right::before {
             content: '';
-            position: absolute; inset: 0;
+            position: absolute;
+            inset: 0;
             background:
-                radial-gradient(ellipse at 20% 60%, rgba(92,177,117,0.15) 0%, transparent 55%),
-                radial-gradient(ellipse at 80% 10%, rgba(58,125,80,0.2) 0%, transparent 45%);
+                radial-gradient(ellipse at 20% 60%, rgba(92, 177, 117, 0.15) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 10%, rgba(58, 125, 80, 0.2) 0%, transparent 45%);
         }
+
         .hero-watermark {
             font-family: 'Fraunces', serif;
-            font-size: 11rem; font-weight: 700; font-style: italic;
-            color: rgba(255,255,255,0.04);
-            position: absolute; bottom: -2rem; right: -2rem;
-            line-height: 1; pointer-events: none; user-select: none;
+            font-size: 11rem;
+            font-weight: 700;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.04);
+            position: absolute;
+            bottom: -2rem;
+            right: -2rem;
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
         }
+
         .stat-pill {
-            position: relative; z-index: 2;
-            background: rgba(255,255,255,0.07);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px; padding: 1.4rem 1.8rem;
-            width: 100%; max-width: 320px;
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.4rem 1.8rem;
+            width: 100%;
+            max-width: 320px;
             transition: background 0.25s, transform 0.25s;
             animation: fadeUp 0.7s forwards;
         }
-        .stat-pill:hover { background: rgba(255,255,255,0.12); transform: translateX(6px); }
-        .stat-pill:nth-child(2) { animation-delay: 0.15s; }
-        .stat-pill:nth-child(3) { animation-delay: 0.3s; }
-        .stat-pill:nth-child(4) { animation-delay: 0.45s; }
+
+        .stat-pill:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateX(6px);
+        }
+
+        .stat-pill:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .stat-pill:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .stat-pill:nth-child(4) {
+            animation-delay: 0.45s;
+        }
+
         .sp-top {
-            display: flex; align-items: center; gap: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
             margin-bottom: 0.4rem;
         }
+
         .sp-icon {
-            width: 36px; height: 36px; border-radius: 9px;
-            background: rgba(255,255,255,0.1);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1rem; flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
         }
+
         .sp-val {
             font-family: 'Fraunces', serif;
-            font-size: 1.6rem; font-weight: 700; color: white; line-height: 1;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1;
         }
-        .sp-val span { color: var(--leaf); }
-        .sp-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 1.4; }
+
+        .sp-val span {
+            color: var(--leaf);
+        }
+
+        .sp-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.4;
+        }
 
         /* ── SECCIÓN EDUCATIVA ── */
         .educational {
@@ -222,243 +445,456 @@
             background: var(--white);
             text-align: center;
         }
+
         .section-label {
-            font-size: 0.72rem; font-weight: 500; letter-spacing: 3px;
-            text-transform: uppercase; color: var(--moss);
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--moss);
             margin-bottom: 0.8rem;
         }
+
         .section-title {
             font-family: 'Fraunces', serif;
             font-size: clamp(2rem, 3vw, 2.8rem);
-            font-weight: 700; color: var(--forest);
-            letter-spacing: -1px; line-height: 1.1;
+            font-weight: 700;
+            color: var(--forest);
+            letter-spacing: -1px;
+            line-height: 1.1;
             margin-bottom: 3rem;
         }
-        .section-title em { font-style: italic; font-weight: 300; color: var(--moss); }
+
+        .section-title em {
+            font-style: italic;
+            font-weight: 300;
+            color: var(--moss);
+        }
 
         .edu-cards {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
-            max-width: 900px; margin: 0 auto;
+            max-width: 900px;
+            margin: 0 auto;
         }
+
         .edu-card {
             background: var(--cream);
             border: 1px solid var(--border);
-            border-radius: 20px; padding: 2.2rem 1.8rem;
+            border-radius: 20px;
+            padding: 2.2rem 1.8rem;
             text-align: left;
-            position: relative; overflow: hidden;
+            position: relative;
+            overflow: hidden;
             transition: transform 0.25s, box-shadow 0.25s;
         }
+
         .edu-card::after {
             content: '';
-            position: absolute; bottom: 0; left: 0; right: 0;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
             height: 3px;
             background: linear-gradient(90deg, var(--leaf), var(--moss));
-            transform: scaleX(0); transform-origin: left;
+            transform: scaleX(0);
+            transform-origin: left;
             transition: transform 0.3s;
         }
-        .edu-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(30,77,43,0.1); }
-        .edu-card:hover::after { transform: scaleX(1); }
-        .edu-card-icon {
-            font-size: 2rem; margin-bottom: 1.1rem; display: block;
+
+        .edu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(30, 77, 43, 0.1);
         }
+
+        .edu-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .edu-card-icon {
+            font-size: 2rem;
+            margin-bottom: 1.1rem;
+            display: block;
+        }
+
         .edu-card h3 {
             font-family: 'Fraunces', serif;
-            font-size: 1.15rem; font-weight: 600;
-            color: var(--forest); margin-bottom: 0.6rem;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--forest);
+            margin-bottom: 0.6rem;
         }
+
         .edu-card p {
-            font-size: 0.88rem; line-height: 1.7; color: var(--muted);
+            font-size: 0.88rem;
+            line-height: 1.7;
+            color: var(--muted);
         }
 
         /* ── STRIP ── */
         .strip {
             background: var(--forest);
             padding: 4rem 5rem;
-            display: flex; justify-content: space-between; align-items: center;
-            gap: 2rem; flex-wrap: wrap;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
         }
+
         .strip-text {
             font-family: 'Fraunces', serif;
             font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-            font-weight: 700; color: white;
-            letter-spacing: -0.5px; line-height: 1.2;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
         }
-        .strip-text em { font-style: italic; font-weight: 300; color: rgba(255,255,255,0.5); }
+
+        .strip-text em {
+            font-style: italic;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
         .strip-btn {
-            display: inline-flex; align-items: center; gap: 0.6rem;
-            background: var(--leaf); color: var(--forest);
-            padding: 0.9rem 2rem; border-radius: 50px;
-            text-decoration: none; font-weight: 600; font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--leaf);
+            color: var(--forest);
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
             white-space: nowrap;
             transition: background 0.2s, transform 0.2s;
             flex-shrink: 0;
         }
-        .strip-btn:hover { background: white; transform: scale(1.03); }
+
+        .strip-btn:hover {
+            background: white;
+            transform: scale(1.03);
+        }
 
         /* ── FOOTER ── */
         footer {
-            text-align: center; padding: 2rem;
-            background: var(--ink); color: rgba(255,255,255,0.35);
+            text-align: center;
+            padding: 2rem;
+            background: var(--ink);
+            color: rgba(255, 255, 255, 0.35);
             font-size: 0.82rem;
         }
 
         /* ── ANIMATIONS ── */
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .reveal {
-            opacity: 0; transform: translateY(28px);
+            opacity: 0;
+            transform: translateY(28px);
             transition: opacity 0.65s ease, transform 0.65s ease;
         }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 {
+            transition-delay: 0.1s;
+        }
+
+        .reveal-delay-2 {
+            transition-delay: 0.2s;
+        }
+
+        .reveal-delay-3 {
+            transition-delay: 0.3s;
+        }
 
         /* ── RESPONSIVE ── */
         @media (max-width: 860px) {
-            .hero { grid-template-columns: 1fr; min-height: auto; }
-            .hero-left { padding: 3rem 1.5rem; }
-            .hero-right { min-height: 380px; padding: 3rem 1.5rem; }
-            .educational { padding: 4rem 1.5rem; }
-            .edu-cards { grid-template-columns: 1fr; }
-            .strip { padding: 3rem 1.5rem; flex-direction: column; text-align: center; }
-            header { padding: 1rem 1.2rem; }
-            nav a { margin-left: 0.8rem; font-size: 0.78rem; }
+            .hero {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .hero-left {
+                padding: 3rem 1.5rem;
+            }
+
+            .hero-right {
+                min-height: 380px;
+                padding: 3rem 1.5rem;
+            }
+
+            .educational {
+                padding: 4rem 1.5rem;
+            }
+
+            .edu-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .strip {
+                padding: 3rem 1.5rem;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            header {
+                padding: 1rem 1.2rem;
+            }
+
+            nav a {
+                margin-left: 0.8rem;
+                font-size: 0.78rem;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<!-- HEADER -->
-<header>
-    <div class="logo">
-        🌿 Eco<em>Wash</em>
-        <span class="badge-cliente">Portal Cliente</span>
-    </div>
-    <nav>
-        <a th:href="@{/}">Inicio</a>
-        <a th:href="@{/nosotros}">Nosotros</a>
-        <a th:href="@{/login}">Iniciar Sesión</a>
-        <a th:href="@{/registro}">Registrarse</a>
-        <a th:href="@{/servicios}">Servicios</a>
-        <a th:href="@{/contacto}">Contacto</a>
-    </nav>
-</header>
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            🌿 Eco<em>Wash</em>
+            <span class="badge-cliente">Portal Cliente</span>
 
-<main>
+        </div>
+        <nav>
+            <a th:href="@{/}">Inicio</a>
+            <a th:href="@{/nosotros}">Nosotros</a>
+            <a th:href="@{/servicios}">Servicios</a>
+            <a th:href="@{/contacto}">Contacto</a>
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="hero-left">
-            <span class="hero-eyebrow">Portal Cliente</span>
-            <h1 class="hero-title">
-                Rastrea tus<br>prendas en<br><em>tiempo real</em>
-            </h1>
+            <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Iniciar Sesión</a>
+            <a th:href="@{/registro}" sec:authorize="!isAuthenticated()">Registrarse</a>
 
-            <div class="tracker-box">
-                <div class="tracker-label">Consultar estado de pedido</div>
-                <form action="#" method="get" class="tracker-form">
-                    <input type="text" placeholder="Ej. ECO-1234" required />
-                    <button type="submit">Consultar →</button>
-                </form>
+            <a th:href="@{/pedidos}" sec:authorize="isAuthenticated()">Mis Pedidos</a>
+
+            <button id="openProfileBtn" class="profile-btn-elegant" sec:authorize="isAuthenticated()">
+                Mi <em>Perfil</em>
+            </button>
+            <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" class="logout-form">
+                <button type="submit">Salir</button>
+            </form>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-left">
+                <span class="hero-eyebrow">Portal Cliente</span>
+                <h1 class="hero-title">
+                    Rastrea tus<br>prendas en<br><em>tiempo real</em>
+                </h1>
+
+                <div class="tracker-box">
+                    <div class="tracker-label">Consultar estado de pedido</div>
+                    <form onsubmit="rastrearTicketModal(event)" class="tracker-form">
+                        <input type="text" id="inputCodigoRastreo" placeholder="Ej. ECO-1234" required />
+                        <button type="submit">Consultar →</button>
+                    </form>
+
+
+                </div>
+
+                <div class="hero-links">
+                    <a th:href="@{/servicios}" class="hero-btn-primary">Ver servicios ↗</a>
+                    <a th:href="@{/nosotros}" class="hero-btn-ghost">Conocer EcoWash</a>
+                </div>
             </div>
 
-            <div class="hero-links">
-                <a th:href="@{/servicios}" class="hero-btn-primary">Ver servicios ↗</a>
-                <a th:href="@{/nosotros}" class="hero-btn-ghost">Conocer EcoWash</a>
+            <div class="hero-right">
+                <div class="hero-watermark">Eco</div>
+
+                <div class="stat-pill">
+                    <div class="sp-top">
+                        <div class="sp-icon">💧</div>
+                        <div class="sp-val">60<span>%</span></div>
+                    </div>
+                    <div class="sp-label">menos agua que una lavandería convencional</div>
+                </div>
+
+                <div class="stat-pill">
+                    <div class="sp-top">
+                        <div class="sp-icon">⚡</div>
+                        <div class="sp-val">98<span>%</span></div>
+                    </div>
+                    <div class="sp-label">de pedidos entregados a tiempo en Lima</div>
+                </div>
+
+                <div class="stat-pill">
+                    <div class="sp-top">
+                        <div class="sp-icon">🌱</div>
+                        <div class="sp-val">100<span>%</span></div>
+                    </div>
+                    <div class="sp-label">de productos biodegradables y sin fosfatos</div>
+                </div>
+
+                <div class="stat-pill">
+                    <div class="sp-top">
+                        <div class="sp-icon">📦</div>
+                        <div class="sp-val">+3<span>k</span></div>
+                    </div>
+                    <div class="sp-label">clientes satisfechos en toda Lima</div>
+                </div>
+            </div>
+        </section>
+
+        <div id="modalRastreo" class="modal-overlay">
+            <div class="modal-content" style="max-width: 420px; padding: 0; overflow: hidden; border-radius: 20px;">
+
+                <button class="close-modal" onclick="cerrarModalRastreo()"
+                    style="color: white; z-index: 10; top: 1rem; right: 1rem;">×</button>
+
+                <div
+                    style="background: var(--forest, #1e4d2b); color: white; padding: 2rem 1.5rem 1.5rem; text-align:center; position: relative;">
+                    <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">🌿</span>
+                    <h3 id="m-estado"
+                        style="margin:0; font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 500;">
+                        -</h3>
+                </div>
+
+                <div style="padding: 2rem 2.5rem; background: #ffffff;">
+                    <div id="m-codigo"
+                        style="text-align:center; font-family:'Fraunces', serif; font-size:1.8rem; color:var(--forest, #1e4d2b); margin-bottom: 1.5rem; font-weight: 700;">
+                        ECO-0000</div>
+
+                    <div
+                        style="display:flex; justify-content:space-between; border-bottom:1px dashed var(--border, #d4e3d8); padding: 10px 0; font-size: 0.95rem;">
+                        <span style="color: var(--muted, #6b7f6e);">Servicio</span><strong id="m-servicio"
+                            style="color: var(--ink, #1a2218);">-</strong>
+                    </div>
+
+                    <div
+                        style="display:flex; justify-content:space-between; border-bottom:1px dashed var(--border, #d4e3d8); padding: 10px 0; font-size: 0.95rem;">
+                        <span style="color: var(--muted, #6b7f6e);">Cliente</span><span id="m-cliente"
+                            style="color: var(--ink, #1a2218); font-weight: 500;">-</span>
+                    </div>
+
+                    <div
+                        style="display:flex; justify-content:space-between; border-bottom:2px solid var(--border, #d4e3d8); padding: 12px 0; margin-top: 5px; font-size: 1.1rem;">
+                        <span style="color: var(--ink, #1a2218); font-weight: 700;">Total
+                            Pagado</span><strong id="m-total" style="color: var(--moss, #3a7d50);">-</strong>
+                    </div>
+
+                    <p
+                        style="font-size:0.8rem; color:var(--muted, #6b7f6e); text-align:center; margin-top:20px; line-height: 1.4;">
+                        📍 Dirección de atención:<br><span id="m-dir"
+                            style="font-weight: 600; color: var(--ink, #1a2218);">-</span>
+                    </p>
+                </div>
             </div>
         </div>
 
-        <div class="hero-right">
-            <div class="hero-watermark">Eco</div>
+        <script>
+            async function rastrearTicketModal(event) {
+                event.preventDefault();
+                const codigo = document.getElementById('inputCodigoRastreo').value;
 
-            <div class="stat-pill">
-                <div class="sp-top">
-                    <div class="sp-icon">💧</div>
-                    <div class="sp-val">60<span>%</span></div>
-                </div>
-                <div class="sp-label">menos agua que una lavandería convencional</div>
-            </div>
+                try {
+                    const res = await fetch(`/api/pedidos/rastrear?codigo=${codigo}`);
+                    if (!res.ok) {
+                        alert("Código de ticket no encontrado.");
+                        return;
+                    }
+                    const p = await res.json();
 
-            <div class="stat-pill">
-                <div class="sp-top">
-                    <div class="sp-icon">⚡</div>
-                    <div class="sp-val">98<span>%</span></div>
-                </div>
-                <div class="sp-label">de pedidos entregados a tiempo en Lima</div>
-            </div>
+                    // Llenar el modal con los datos del JSON
+                    document.getElementById('m-codigo').innerText = p.codigo;
+                    document.getElementById('m-estado').innerText = "Estado: " + p.estado;
+                    document.getElementById('m-servicio').innerText = p.servicio;
+                    document.getElementById('m-total').innerText = "S/ " + p.total.toFixed(2);
+                    document.getElementById('m-cliente').innerText = p.nombre;
+                    document.getElementById('m-dir').innerText = p.direccion;
 
-            <div class="stat-pill">
-                <div class="sp-top">
-                    <div class="sp-icon">🌱</div>
-                    <div class="sp-val">100<span>%</span></div>
-                </div>
-                <div class="sp-label">de productos biodegradables y sin fosfatos</div>
-            </div>
-
-            <div class="stat-pill">
-                <div class="sp-top">
-                    <div class="sp-icon">📦</div>
-                    <div class="sp-val">+3<span>k</span></div>
-                </div>
-                <div class="sp-label">clientes satisfechos en toda Lima</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECCIÓN EDUCATIVA -->
-    <section class="educational">
-        <p class="section-label reveal">Por qué elegirnos</p>
-        <h2 class="section-title reveal reveal-delay-1">¿Por qué elegir un<br><em>lavado ecológico?</em></h2>
-
-        <div class="edu-cards">
-            <div class="edu-card reveal reveal-delay-1">
-                <span class="edu-card-icon">💧</span>
-                <h3>Ahorro de Agua</h3>
-                <p>Nuestras máquinas de alta eficiencia reducen el consumo de agua en un 40% comparado con el lavado tradicional.</p>
-            </div>
-            <div class="edu-card reveal reveal-delay-2">
-                <span class="edu-card-icon">🌱</span>
-                <h3>Biodegradable</h3>
-                <p>Utilizamos detergentes e insumos 100% amigables con el medio ambiente, protegiendo nuestros ríos y mares.</p>
-            </div>
-            <div class="edu-card reveal reveal-delay-3">
-                <span class="edu-card-icon">👕</span>
-                <h3>Cuidado Textil</h3>
-                <p>Fórmulas suaves que alargan la vida útil de tus prendas, reduciendo el impacto de la moda desechable.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- STRIP CTA -->
-    <div class="strip reveal">
-        <div class="strip-text">
-            ¿Listo para tu<br><em>primer pedido?</em>
-        </div>
-        <a th:href="@{/servicios}" class="strip-btn">Ver precios y reservar →</a>
-    </div>
-
-</main>
-
-<footer>
-    <p>&copy; 2025 EcoWash — Cuidando tu ropa y el planeta 🌿</p>
-</footer>
-
-<script>
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-            if (e.isIntersecting) {
-                e.target.classList.add('visible');
-                observer.unobserve(e.target);
+                    // Abrir modal (Usando la clase .active que ya tienes en tu CSS de perfilModal)
+                    document.getElementById('modalRastreo').classList.add('active');
+                } catch (err) {
+                    alert("Error al conectar con el servidor.");
+                }
             }
-        });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
+
+            function cerrarModalRastreo() {
+                document.getElementById('modalRastreo').classList.remove('active');
+            }
+        </script>
+        <!-- SECCIÓN EDUCATIVA -->
+        <section class="educational">
+            <p class="section-label reveal">Por qué elegirnos</p>
+            <h2 class="section-title reveal reveal-delay-1">¿Por qué elegir un<br><em>lavado ecológico?</em></h2>
+
+            <div class="edu-cards">
+                <div class="edu-card reveal reveal-delay-1">
+                    <span class="edu-card-icon">💧</span>
+                    <h3>Ahorro de Agua</h3>
+                    <p>Nuestras máquinas de alta eficiencia reducen el consumo de agua en un 40% comparado con el lavado
+                        tradicional.</p>
+                </div>
+                <div class="edu-card reveal reveal-delay-2">
+                    <span class="edu-card-icon">🌱</span>
+                    <h3>Biodegradable</h3>
+                    <p>Utilizamos detergentes e insumos 100% amigables con el medio ambiente, protegiendo nuestros ríos
+                        y mares.</p>
+                </div>
+                <div class="edu-card reveal reveal-delay-3">
+                    <span class="edu-card-icon">👕</span>
+                    <h3>Cuidado Textil</h3>
+                    <p>Fórmulas suaves que alargan la vida útil de tus prendas, reduciendo el impacto de la moda
+                        desechable.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- STRIP CTA -->
+        <div class="strip reveal">
+            <div class="strip-text">
+                ¿Listo para tu<br><em>primer pedido?</em>
+            </div>
+            <a th:href="@{/servicios}" class="strip-btn">Ver precios y reservar →</a>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 EcoWash — Cuidando tu ropa y el planeta 🌿</p>
+    </footer>
+
+    <div sec:authorize="isAuthenticated()">
+        <div th:replace="~{fragments/perfilModal :: modal}"></div>
+    </div>
+
+    <script th:src="@{/js/perfilModal.js}"></script>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
 
 </body>
+
 </html>

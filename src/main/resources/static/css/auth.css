@@ -1,0 +1,283 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;1,900&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    /* Fondo dinámico neón (mantenido) */
+    background: linear-gradient(135deg, #ff007f, #4a00e0, #00d4ff);
+    background-size: 300% 300%;
+    animation: gtaBackground 12s ease infinite;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: #fff; /* Color de texto general blanco */
+}
+
+@keyframes gtaBackground {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Contenedor Glassmorphism (tono piel transparente como solicitaste anteriormente) */
+.auth-container {
+    background: rgba(238, 192, 164, 0.35); 
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 3rem 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    width: 320px;
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    animation: fadeUpIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeUpIn {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+h2 {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 900;
+    font-style: italic;
+    font-size: 2rem;
+    margin-top: 0;
+    margin-bottom: 2rem;
+    letter-spacing: 2px;
+    text-shadow: 3px 3px 0px #ff007f, -3px -3px 0px #00d4ff;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+/* TODOS los labels forzados a blanco (como solicitaste) */
+.form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff !important; /* Forzado a blanco puro */
+    margin-bottom: 0.5rem;
+    transition: color 0.3s;
+}
+
+/* Inputs con estilos base */
+input[type="text"], 
+input[type="email"], 
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    font-family: 'Montserrat', sans-serif;
+    box-sizing: border-box;
+    border: none;
+    transition: all 0.3s ease;
+    outline: none;
+    border-radius: 4px; /* Pequeño radio para mejor integración */
+}
+
+/* Estilo para inputs con TEXTO NEGRO (por defecto para todos menos el primero) */
+input[type="text"]:not(#username):not(#nombre), 
+input[type="email"], 
+input[type="password"] {
+    color: #000; /* Texto negro */
+    /* Fondo ligeramente claro para contraste con texto negro */
+    background: rgba(255, 255, 255, 0.9); 
+    border-bottom: 2px solid rgba(0, 0, 0, 0.3); /* Borde oscuro */
+}
+
+/* Override explícito para el PRIMER input (debe tener TEXTO BLANCO y fondo oscuro) */
+#username, #nombre {
+    color: #fff; /* Texto blanco */
+    background: rgba(255, 255, 255, 0.05); /* Fondo oscuro original */
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2); /* Borde claro */
+}
+
+/* Placeholder colors */
+::placeholder {
+    color: rgba(0, 0, 0, 0.5); /* Placeholder oscuro para inputs claros */
+}
+#username::placeholder, #nombre::placeholder {
+    color: rgba(255, 255, 255, 0.7); /* Placeholder claro para input oscuro */
+}
+
+
+/* Focus states - explicitos para ambos tipos de inputs */
+input:focus {
+    background: rgba(255, 255, 255, 1); /* Focus background para inputs claros */
+    border-bottom: 2px solid #ff007f; /* Neón fucsia para inputs claros */
+    box-shadow: 0 10px 20px -10px rgba(255, 0, 127, 0.4);
+}
+
+#username:focus, #nombre:focus {
+    background: rgba(255, 255, 255, 0.1); /* Focus background para input oscuro */
+    border-bottom: 2px solid #00d4ff; /* Neón cian original para input oscuro */
+    box-shadow: 0 10px 20px -10px rgba(0, 212, 255, 0.5);
+    /* Importante: asegurar color blanco aquí si se heredara diferente */
+    color: #fff; 
+}
+
+
+/* Botón vibrante (mantenido) */
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 1rem;
+    background: linear-gradient(90deg, #ff007f, #ff5e62);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 0, 127, 0.4);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+.error {
+    background: rgba(255, 0, 0, 0.2);
+    border-left: 4px solid #ff003c;
+    color: #fff;
+    padding: 10px;
+    font-size: 0.85em;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+    animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.links {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.85em;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.links a {
+    color: #00d4ff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+.links a:hover {
+    color: #fff;
+    text-shadow: 0 0 8px #00d4ff;
+}
+
+/* --- NUEVO FONDO ANIMADO CON ICONOS --- */
+#background-animations {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Detrás de todo */
+    pointer-events: none; /* No interactuable */
+}
+
+/* Iconos base - utilizando Unicode */
+#background-animations .icon {
+    position: absolute;
+    font-size: 1.5rem; /* Tamaño icono */
+    color: rgba(255, 255, 255, 0.6); /* Color icono sutil transparente */
+    opacity: 0; /* Staggered opacity animation */
+    transform: translateY(0);
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-duration: 10s; /* Duración por defecto */
+}
+
+/* Animación: Hojas cayendo con giro */
+@keyframes fallingLeaves {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(180deg); opacity: 0; }
+}
+
+/* Animación: Gotas cayendo recto */
+@keyframes floatingDrops {
+    0% { transform: translateY(-10vh); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(110vh); opacity: 0; }
+}
+
+/* Animación: Burbujas subiendo */
+@keyframes floatingBubbles {
+    0% { transform: translateY(110vh); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* Tipos de iconos específicos usando clases */
+#background-animations .leaf { animation-name: fallingLeaves; }
+#background-animations .drop { animation-name: floatingDrops; }
+#background-animations .bubble { animation-name: floatingBubbles; }
+
+/* Staggered positioning/delays para múltiples iconos */
+/* Ejemplos de posición, delay, duración y tamaño staggered. 
+   Necesitas añadir múltiples span elements en HTML para un buen efecto.
+*/
+#background-animations .icon:nth-child(3n+1) { animation-duration: 9s; left: 5%; }
+#background-animations .icon:nth-child(3n+2) { animation-duration: 11s; left: 25%; font-size: 1.8rem; }
+#background-animations .icon:nth-child(3n) { animation-duration: 13s; left: 45%; font-size: 1.2rem; }
+
+#background-animations .icon:nth-child(1) { top: -10%; animation-delay: 1s; left: 10%; }
+#background-animations .icon:nth-child(2) { top: 10%; animation-delay: 3s; left: 30%; }
+#background-animations .icon:nth-child(3) { top: -20%; animation-delay: 5s; left: 50%; }
+#background-animations .icon:nth-child(4) { top: 20%; animation-delay: 0s; left: 70%; }
+#background-animations .icon:nth-child(5) { top: -5%; animation-delay: 2s; left: 90%; }
+#background-animations .icon:nth-child(6) { top: 15%; animation-delay: 4s; left: 5%; font-size: 2rem; }
+#background-animations .icon:nth-child(7) { top: -15%; animation-delay: 6s; left: 25%; }
+#background-animations .icon:nth-child(8) { top: 25%; animation-delay: 1s; left: 45%; }
+#background-animations .icon:nth-child(9) { top: 5%; animation-delay: 3s; left: 65%; font-size: 1.4rem; }
+#background-animations .icon:nth-child(10) { top: -10%; animation-delay: 5s; left: 85%; }
+#background-animations .icon:nth-child(11) { top: 10%; animation-delay: 2s; left: 15%; font-size: 1.6rem; }
+#background-animations .icon:nth-child(12) { top: -20%; animation-delay: 4s; left: 35%; }
+#background-animations .icon:nth-child(13) { top: 20%; animation-delay: 6s; left: 55%; font-size: 1.3rem; }
+#background-animations .icon:nth-child(14) { top: -5%; animation-delay: 1s; left: 75%; }
+#background-animations .icon:nth-child(15) { top: 15%; animation-delay: 3s; left: 95%; font-size: 1.5rem; }
+#background-animations .icon:nth-child(16) { top: -15%; animation-delay: 5s; left: 10%; }
+#background-animations .icon:nth-child(17) { top: 25%; animation-delay: 0s; left: 30%; font-size: 1.9rem; }
+#background-animations .icon:nth-child(18) { top: 5%; animation-delay: 2s; left: 50%; }
+#background-animations .icon:nth-child(19) { top: -10%; animation-delay: 4s; left: 70%; font-size: 1.1rem; }
+#background-animations .icon:nth-child(20) { top: 10%; animation-delay: 6s; left: 90%; }
+
+/* Estilo para el subtítulo debajo del nombre de la empresa */
+.auth-subtitle {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 4px; /* Letras separadas estilo cinematográfico */
+    color: rgba(255, 255, 255, 0.6); /* Blanco semi-transparente */
+    margin-top: -1.5rem; /* Lo acerca al título principal */
+    margin-bottom: 2rem;
+}

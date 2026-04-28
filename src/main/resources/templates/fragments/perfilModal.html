@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="modal" id="profileModal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="closeProfileBtn" class="close-modal">&times;</button>
+            <h2 class="modal-title">Mi <em>Perfil</em></h2>
+
+            <div class="modal-section">
+                <h3 class="section-subtitle">Datos Generales</h3>
+                <div class="input-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" id="userName" th:value="${cliente != null ? cliente.nombre : ''}"
+                        placeholder="Tu nombre" />
+                </div>
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="userPass" value="********" readonly />
+
+                        <button type="button" id="editPassBtn" class="icon-btn" title="Cambiar Contraseña">✎</button>
+
+                        <button type="button" id="cancelPassBtn" class="icon-btn hidden" title="Cancelar">↩</button>
+                    </div>
+                </div>
+                <button class="btn-save" onclick="saveGeneralData()">Guardar Datos</button>
+            </div>
+
+            <div class="modal-section">
+                <h3 class="section-subtitle">Direcciones</h3>
+                <select id="addressList" class="dynamic-list" size="4">
+                    <option th:if="${cliente != null}" th:each="dir : ${cliente.direcciones}" th:value="${dir}"
+                        th:text="${dir}"></option>
+                </select>
+                <div class="list-controls">
+                    <input type="text" id="addressInput" placeholder="Selecciona o escribe nueva..." />
+                    <div class="action-buttons">
+                        <button class="btn-action add" onclick="addToList('address')">✚ Agregar</button>
+                        <button class="btn-action edit" onclick="editInList('address')">✎ Renombrar</button>
+                        <button class="btn-action delete" onclick="removeFromList('address')">✖ Eliminar</button>
+                    </div>
+                </div>
+                <button class="btn-save" onclick="saveAddresses()">Guardar Direcciones</button>
+            </div>
+
+            <div class="modal-section">
+                <h3 class="section-subtitle">Teléfonos</h3>
+                <select id="phoneList" class="dynamic-list" size="3">
+                    <option th:if="${cliente != null}" th:each="tel : ${cliente.telefonos}" th:value="${tel}"
+                        th:text="${tel}"></option>
+                </select>
+                <div class="list-controls">
+                    <input type="text" id="phoneInput" placeholder="Ej. 987654321" />
+                    <div class="action-buttons">
+                        <button class="btn-action add" onclick="addToList('phone')">✚ Agregar</button>
+                        <button class="btn-action edit" onclick="editInList('phone')">✎ Renombrar</button>
+                        <button class="btn-action delete" onclick="removeFromList('phone')">✖ Eliminar</button>
+                    </div>
+                </div>
+                <button class="btn-save" onclick="savePhones()">Guardar Teléfonos</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <title>Mis Pedidos - EcoWash</title>
+    <link rel="stylesheet" th:href="@{/css/perfilModal.css}" />
+    <style>
+        /* Estilos base reutilizados (simplificados para el ejemplo) */
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #f5f0e8;
+            color: #1a2218;
+            margin: 0;
+            padding-top: 80px;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.1rem 2.5rem;
+            background: rgba(245, 240, 232, 0.88);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #d4e3d8;
+        }
+
+        .logo {
+            font-family: 'Fraunces', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e4d2b;
+        }
+
+        .logo em {
+            font-style: italic;
+            color: #3a7d50;
+        }
+
+        nav a {
+            margin-left: 1.4rem;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7f6e;
+        }
+
+        /* Contenedor principal de Pedidos */
+        .pedidos-container {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-title {
+            font-family: 'Fraunces', serif;
+            font-size: 2.2rem;
+            color: #1e4d2b;
+            margin-bottom: 2rem;
+        }
+
+        .page-title em {
+            font-style: italic;
+            color: #3a7d50;
+            font-weight: 300;
+        }
+
+        /* Pestañas */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #d4e3d8;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            color: #6b7f6e;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            color: #1e4d2b;
+            border-bottom-color: #5cb175;
+        }
+
+        /* Lista de Tickets */
+        .ticket-list {
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ticket-list.active {
+            display: flex;
+        }
+
+        .ticket-card {
+            background: white;
+            border: 1px solid #d4e3d8;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .ticket-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .tc-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .tc-codigo {
+            font-family: 'Fraunces', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e4d2b;
+        }
+
+        .tc-fecha {
+            font-size: 0.85rem;
+            color: #6b7f6e;
+        }
+
+        .tc-estado {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .estado-proceso {
+            background: #e8f2eb;
+            color: #3a7d50;
+        }
+
+        .estado-terminado {
+            background: #ede8de;
+            color: #6b7f6e;
+        }
+
+        /* Estilo del Ticket (Importado de tu código original) */
+        .ticket-viewer {
+            display: none;
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #d4e3d8;
+            max-width: 460px;
+            margin: 2rem auto;
+            overflow: hidden;
+            box-shadow: 0 16px 60px rgba(30, 77, 43, 0.15);
+            animation: fadeUp 0.4s ease;
+        }
+
+        .ticket-top {
+            background: #1e4d2b;
+            color: white;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .ticket-body {
+            padding: 1.8rem;
+        }
+
+        .ticket-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: 0.87rem;
+            border-bottom: 1px solid #d4e3d8;
+        }
+
+        .btn-volver {
+            display: block;
+            margin-bottom: 1rem;
+            background: none;
+            border: none;
+            color: #3a7d50;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        .btn-cancelar-ticket {
+            width: 100%;
+            background: #fff;
+            border: 2px solid #d9534f;
+            color: #d9534f;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.2s;
+        }
+
+        .btn-cancelar-ticket:hover {
+            background: #d9534f;
+            color: #fff;
+        }
+    </style>
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">🌿 Eco<em>Wash</em></div>
+        <nav>
+            <a th:href="@{/}">Inicio</a>
+            <a th:href="@{/servicios}">Servicios</a>
+            <a th:href="@{/pedidos}" style="color: #1e4d2b; font-weight: 700;">Mis Pedidos</a>
+            <button id="openProfileBtn" class="profile-btn-elegant">Mi <em>Perfil</em></button>
+            <form th:action="@{/logout}" method="post" class="logout-form"><button type="submit">Salir</button></form>
+        </nav>
+    </header>
+
+    <div class="pedidos-container">
+        <h1 class="page-title">Historial de <em>Pedidos</em></h1>
+
+        <div class="tabs" id="tabs-container">
+            <button class="tab-btn active" onclick="switchTab('proceso')">En Proceso</button>
+            <button class="tab-btn" onclick="switchTab('historial')">Historial Terminado</button>
+        </div>
+
+        <div id="list-proceso" class="ticket-list active">
+            <div th:each="pedido : ${pedidosProceso}" class="ticket-card" th:data-codigo="${pedido.codigo}"
+                th:data-servicio="${pedido.servicioElegido ?: 'Estandar'}" th:data-estado="${pedido.estado}"
+                th:data-total="${pedido.total}" onclick="verDetalleTicket(this)">
+
+                <div class="tc-info">
+                    <span class="tc-codigo" th:text="${pedido.codigo}">ECO-XXXX</span>
+                    <span class="tc-fecha" th:text="'Fecha de servicio: ' + ${pedido.fechaServicio}">Fecha de
+                        servicio</span>
+                </div>
+                <span class="tc-estado estado-proceso" th:text="${pedido.estado}">ESTADO</span>
+            </div>
+
+            <div th:if="${#lists.isEmpty(pedidosProceso)}" style="text-align: center; color: #6b7f6e; padding: 2rem;">
+                No tienes pedidos en proceso actualmente. 🌿
+            </div>
+        </div>
+
+        <div id="list-historial" class="ticket-list">
+            <div th:each="pedido : ${pedidosHistorial}" class="ticket-card" th:data-codigo="${pedido.codigo}"
+                th:data-servicio="${pedido.servicioElegido ?: 'Estandar'}" th:data-estado="${pedido.estado}"
+                th:data-total="${pedido.total}" onclick="verDetalleTicket(this)">
+
+                <div class="tc-info">
+                    <span class="tc-codigo" th:text="${pedido.codigo}">ECO-XXXX</span>
+                    <span class="tc-fecha" th:text="'Fecha de servicio: ' + ${pedido.fechaServicio}">Fecha de
+                        servicio</span>
+                </div>
+                <span class="tc-estado estado-terminado" th:text="${pedido.estado}">ESTADO</span>
+            </div>
+        </div>
+
+        <div id="ticket-viewer" class="ticket-viewer">
+            <button class="btn-volver" onclick="cerrarTicket()">← Volver</button>
+            <div class="ticket-top">
+                <h2 id="tv-estado">Estado</h2>
+            </div>
+            <div class="ticket-body">
+                <div id="tv-codigo" style="text-align:center; font-family:'Fraunces'; font-size:1.5rem;">-</div>
+                <div class="ticket-row"><span>Servicio</span><strong id="tv-servicio">-</strong></div>
+                <div class="ticket-row"><span>Total</span><strong id="tv-total">-</strong></div>
+
+                <button id="btnCancelarPedido" class="btn-cancelar-ticket" onclick="ejecutarCancelacion()">
+                    ❌ Cancelar Pedido
+                </button>
+                <p id="msgCancelado" class="hidden"
+                    style="color: #d9534f; font-size: 0.8rem; text-align: center; margin-top: 10px;">
+                    Este pedido ha sido cancelado.
+                </p>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+    <div th:replace="~{fragments/perfilModal :: modal}"></div>
+    <script th:src="@{/js/perfilModal.js}"></script>
+
+    <script>
+        // 1. Lógica para mostrar el ticket y controlar los botones
+        function verDetalleTicket(elementoCard) {
+            const codigo = elementoCard.getAttribute('data-codigo');
+            const servicio = elementoCard.getAttribute('data-servicio');
+            const estado = String(elementoCard.getAttribute('data-estado')).trim().toUpperCase();
+            const total = 'S/ ' + parseFloat(elementoCard.getAttribute('data-total')).toFixed(2);
+
+            document.querySelectorAll('.ticket-list').forEach(el => el.classList.remove('active'));
+            document.getElementById('tabs-container').style.display = 'none';
+
+            document.getElementById('tv-codigo').innerText = codigo;
+            document.getElementById('tv-servicio').innerText = servicio;
+            document.getElementById('tv-estado').innerText = estado;
+            document.getElementById('tv-total').innerText = total;
+
+            const btnCancelar = document.getElementById('btnCancelarPedido');
+            const msgCancelado = document.getElementById('msgCancelado');
+
+            if (estado === 'CANCELADO') {
+                btnCancelar.style.display = 'none';
+                msgCancelado.style.display = 'block';
+                msgCancelado.classList.remove('hidden');
+            } else if (estado === 'ENTREGADO') {
+                btnCancelar.style.display = 'none';
+                msgCancelado.style.display = 'none';
+                msgCancelado.classList.add('hidden');
+            } else {
+                btnCancelar.style.display = 'block';
+                msgCancelado.style.display = 'none';
+                msgCancelado.classList.add('hidden');
+            }
+
+            document.getElementById('ticket-viewer').style.display = 'block';
+        }
+
+        // 2. Lógica de Cancelación con API
+        async function ejecutarCancelacion() {
+            const codigo = document.getElementById('tv-codigo').innerText;
+            if (!confirm(`¿Estás seguro de cancelar el pedido ${codigo}? El reembolso dependerá del estado actual.`)) return;
+
+            const res = await fetch(`/api/pedidos/cancelar/${codigo}`, {
+                method: 'POST',
+                headers: getAuthHeaders() 
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                alert(`Pedido Cancelado.\nMonto a devolver: S/ ${data.reembolso.toFixed(2)}\nEl repartidor pasará por la dirección para devolver las prendas si aplica.`);
+                location.reload(); 
+            }
+        }
+
+        // 3. Lógica para cambiar pestañas (Proceso / Historial)
+        function switchTab(tabId) {
+            document.querySelectorAll('.ticket-list').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('ticket-viewer').style.display = 'none';
+
+            document.getElementById('list-' + tabId).classList.add('active');
+            document.getElementById('tabs-container').style.display = 'flex';
+            event.target.classList.add('active');
+        }
+
+        // 4. Volver a la lista
+        function cerrarTicket() {
+            document.getElementById('ticket-viewer').style.display = 'none';
+            document.getElementById('tabs-container').style.display = 'flex';
+            document.querySelector('.tab-btn.active').click();
+        }
+    </script>
+</body>
+
+</html>
