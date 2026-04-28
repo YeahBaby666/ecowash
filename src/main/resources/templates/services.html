@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Servicios — EcoWash</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300;1,9..144,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:    #1a2218;
+  --forest: #1e4d2b;
+  --moss:   #3a7d50;
+  --leaf:   #5cb175;
+  --mist:   #e8f2eb;
+  --cream:  #f5f0e8;
+  --sand:   #ede8de;
+  --white:  #ffffff;
+  --muted:  #6b7f6e;
+  --border: #d4e3d8;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.1rem 2.5rem;
+  background: rgba(245,240,232,0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  font-family: 'Fraunces', serif;
+  font-size: 1.5rem; font-weight: 700;
+  color: var(--forest); letter-spacing: -0.5px;
+  display: flex; align-items: center; gap: 10px;
+}
+.logo em { font-style: italic; color: var(--moss); }
+nav a {
+  margin-left: 1.4rem; text-decoration: none;
+  font-size: 0.875rem; font-weight: 500;
+  color: var(--muted); transition: color 0.2s;
+}
+nav a:hover { color: var(--forest); }
+
+/* ── HERO SERVICIOS ── */
+.hero-servicios {
+  min-height: 52vh;
+  padding-top: 72px;
+  background: var(--forest);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center;
+}
+.hero-servicios::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 60%, rgba(92,177,117,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 20%, rgba(58,125,80,0.22) 0%, transparent 45%);
+}
+.hero-watermark {
+  font-family: 'Fraunces', serif;
+  font-size: 22rem; font-weight: 700; font-style: italic;
+  color: rgba(255,255,255,0.03);
+  position: absolute; bottom: -5rem; right: -4rem;
+  line-height: 1; pointer-events: none; user-select: none;
+}
+.hero-servicios-inner {
+  position: relative; z-index: 2;
+  padding: 4rem 5rem;
+  max-width: 700px;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.75rem; font-weight: 500; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--leaf);
+  margin-bottom: 1.4rem;
+  opacity: 0; animation: fadeUp 0.7s 0.1s forwards;
+}
+.hero-eyebrow::before {
+  content: ''; display: inline-block;
+  width: 24px; height: 1.5px; background: var(--leaf);
+}
+.hero-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  font-weight: 700; line-height: 1.06;
+  color: white; letter-spacing: -1.5px;
+  margin-bottom: 1.2rem;
+  opacity: 0; animation: fadeUp 0.7s 0.25s forwards;
+}
+.hero-title em { font-style: italic; font-weight: 300; color: rgba(255,255,255,0.5); }
+.hero-sub {
+  font-size: 1rem; color: rgba(255,255,255,0.55);
+  line-height: 1.7; max-width: 460px;
+  opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
+}
+
+/* ── TIPO DE SERVICIO ── */
+.service-section {
+  padding: 5rem 5rem 3rem;
+  background: var(--white);
+}
+.section-label {
+  font-size: 0.72rem; font-weight: 500; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--moss);
+  margin-bottom: 0.7rem;
+}
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700; color: var(--forest);
+  letter-spacing: -1px; line-height: 1.1;
+  margin-bottom: 2.5rem;
+}
+.section-title em { font-style: italic; font-weight: 300; color: var(--moss); }
+
+.service-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+}
+.card {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 1.8rem 1.4rem;
+  text-align: center; cursor: pointer;
+  transition: all 0.28s;
+  position: relative; overflow: hidden;
+}
+.card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--leaf), var(--moss));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s;
+}
+.card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(30,77,43,0.1); }
+.card:hover::after { transform: scaleX(1); }
+.card.active {
+  border-color: var(--moss);
+  background: var(--mist);
+  box-shadow: 0 12px 40px rgba(30,77,43,0.12);
+}
+.card.active::after { transform: scaleX(1); }
+.card-check {
+  position: absolute; top: 12px; right: 14px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--forest); color: white;
+  font-size: 0.7rem; display: none;
+  align-items: center; justify-content: center;
+}
+.card.active .card-check { display: flex; }
+.card-icon { font-size: 2.2rem; margin-bottom: 0.8rem; display: block; }
+.card-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem; font-weight: 600;
+  color: var(--forest); margin-bottom: 0.5rem;
+}
+.card-desc { font-size: 0.82rem; line-height: 1.6; color: var(--muted); }
+
+/* ── PRENDAS ── */
+.prendas-section {
+  padding: 2rem 5rem 6rem;
+  background: var(--white);
+}
+.category-label {
+  display: flex; align-items: center; gap: 0.8rem;
+  font-size: 0.72rem; font-weight: 500; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--moss);
+  margin: 2.5rem 0 1rem;
+}
+.category-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+/* ACCORDION */
+.item {
+  background: var(--cream);
+  margin-bottom: 0.6rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.item:hover { box-shadow: 0 8px 30px rgba(30,77,43,0.08); transform: translateX(3px); }
+.item-header {
+  padding: 1.1rem 1.4rem;
+  display: flex; justify-content: space-between; align-items: center;
+  cursor: pointer;
+  font-family: 'Fraunces', serif;
+  font-size: 1rem; font-weight: 600;
+  color: var(--forest);
+  border-left: 3.5px solid var(--leaf);
+  transition: background 0.2s;
+}
+.item-header:hover { background: var(--mist); }
+.item-header-right {
+  display: flex; align-items: center; gap: 1rem;
+}
+.price-range {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem; color: var(--muted); font-weight: 400;
+}
+.chevron { transition: transform 0.3s; color: var(--muted); font-size: 0.7rem; }
+.item.active .chevron { transform: rotate(180deg); }
+.item-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease;
+  padding: 0 1.4rem;
+}
+.item.active .item-body { max-height: 600px; padding: 0.2rem 1.4rem 1.2rem; }
+
+.sub-item {
+  display: flex; align-items: center;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--border);
+  gap: 1rem;
+}
+.sub-item:last-child { border-bottom: none; }
+.sub-item-name { font-size: 0.88rem; flex: 1; color: var(--ink); }
+.sub-item-price {
+  font-size: 0.85rem; font-weight: 600;
+  color: var(--forest); min-width: 75px; text-align: right;
+}
+
+/* CONTADOR */
+.contador {
+  display: flex; align-items: center;
+  border: 1.5px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+}
+.contador button {
+  background: var(--white); color: var(--forest);
+  border: none; width: 32px; height: 32px;
+  font-size: 1rem; cursor: pointer; font-weight: 700;
+  transition: background 0.2s, color 0.2s;
+}
+.contador button:hover { background: var(--forest); color: white; }
+.contador input {
+  width: 38px; text-align: center; border: none;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  font-size: 0.9rem; font-weight: 600;
+  background: var(--white); height: 32px; outline: none;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── FLOATING BAR ── */
+.floating-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--forest);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 1rem 3rem;
+  display: flex; justify-content: space-between; align-items: center;
+  z-index: 200;
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
+  transform: translateY(100%);
+  transition: transform 0.35s ease;
+}
+.floating-bar.visible { transform: translateY(0); }
+.fb-left { display: flex; flex-direction: column; gap: 2px; }
+.fb-label { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+.fb-amount {
+  font-family: 'Fraunces', serif;
+  font-size: 1.7rem; font-weight: 700; color: white; line-height: 1;
+}
+.fb-amount span { color: var(--leaf); }
+.btn-reservar {
+  background: var(--leaf); color: var(--forest);
+  border: none; padding: 0.9rem 2.2rem;
+  border-radius: 50px; font-size: 0.9rem; font-weight: 700;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-reservar:hover { background: white; transform: scale(1.03); }
+
+/* ── CHECKOUT PAGE ── */
+.page { display: none; }
+.page.visible { display: block; }
+
+.checkout-wrap {
+  max-width: 860px; margin: 0 auto;
+  padding: 6rem 2rem 5rem;
+}
+.checkout-hdr {
+  display: flex; align-items: center; gap: 1.2rem;
+  margin-bottom: 2.5rem;
+}
+.btn-back {
+  background: none; border: 1.5px solid var(--border);
+  border-radius: 50px; padding: 0.5rem 1.2rem;
+  cursor: pointer; font-size: 0.85rem; font-weight: 600;
+  color: var(--muted); transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-back:hover { border-color: var(--moss); color: var(--forest); }
+.checkout-hdr-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.6rem; font-weight: 700; color: var(--forest);
+}
+
+.checkout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8rem; }
+
+.checkout-card {
+  background: var(--white);
+  border-radius: 20px; border: 1px solid var(--border);
+  padding: 1.8rem;
+}
+.checkout-card-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem; font-weight: 600; color: var(--forest);
+  margin-bottom: 1.2rem; padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.summary-item {
+  display: flex; justify-content: space-between;
+  font-size: 0.87rem; padding: 0.45rem 0;
+  color: var(--muted); border-bottom: 1px dashed var(--border);
+}
+.summary-item:last-of-type { border-bottom: none; }
+.summary-item span:last-child { font-weight: 600; color: var(--ink); }
+.summary-service {
+  font-size: 0.78rem; color: var(--muted);
+  margin: 0.6rem 0; padding-top: 0.6rem;
+  border-top: 1px solid var(--border);
+}
+.summary-total {
+  display: flex; justify-content: space-between;
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--forest);
+  padding-top: 0.9rem; margin-top: 0.5rem;
+  border-top: 2px solid var(--border);
+}
+
+/* form fields */
+.field { margin-bottom: 1.1rem; }
+.field label {
+  display: block; font-size: 0.72rem; font-weight: 500;
+  color: var(--muted); margin-bottom: 0.4rem;
+  letter-spacing: 1.5px; text-transform: uppercase;
+}
+.field input, .field select, .field textarea {
+  width: 100%; padding: 0.7rem 1rem;
+  border: 1.5px solid var(--border); border-radius: 12px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+  color: var(--ink); background: var(--cream); outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--moss); background: var(--white);
+}
+.field textarea { resize: vertical; min-height: 85px; }
+
+.mode-tabs {
+  display: flex; gap: 0;
+  border: 1.5px solid var(--border); border-radius: 12px;
+  overflow: hidden; margin-bottom: 1.1rem;
+}
+.mode-tab {
+  flex: 1; padding: 0.7rem; text-align: center;
+  cursor: pointer; font-size: 0.85rem; font-weight: 500;
+  color: var(--muted); transition: all 0.2s;
+  background: var(--cream); font-family: 'DM Sans', sans-serif;
+}
+.mode-tab.active { background: var(--forest); color: white; }
+
+.btn-pagar {
+  width: 100%; background: var(--forest); color: white;
+  border: none; padding: 1rem; border-radius: 50px;
+  font-size: 0.95rem; font-weight: 600; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s; margin-top: 1rem;
+}
+.btn-pagar:hover { background: var(--moss); }
+
+/* ── TICKET ── */
+.ticket-wrap {
+  max-width: 460px; margin: 0 auto;
+  padding: 6rem 2rem 5rem;
+}
+.ticket {
+  background: white; border-radius: 24px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: 0 16px 60px rgba(30,77,43,0.15);
+}
+.ticket-top {
+  background: var(--forest); color: white;
+  padding: 2.5rem; text-align: center;
+  position: relative; overflow: hidden;
+}
+.ticket-top::before {
+  content: '🌿';
+  font-size: 10rem; position: absolute;
+  bottom: -2rem; right: -1rem; opacity: 0.07;
+}
+.ticket-check { font-size: 3rem; margin-bottom: 0.8rem; display: block; }
+.ticket-top h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.6rem; font-weight: 700; color: white;
+  margin-bottom: 0.3rem;
+}
+.ticket-top p { font-size: 0.9rem; color: rgba(255,255,255,0.6); }
+
+.ticket-dashes {
+  display: flex; align-items: center;
+  border-top: 2px dashed var(--border);
+}
+.ticket-hole {
+  width: 28px; height: 28px; background: var(--cream);
+  border-radius: 50%; border: 1px solid var(--border); flex-shrink: 0;
+}
+.ticket-hole.left { margin-left: -14px; }
+.ticket-hole.right { margin-left: auto; margin-right: -14px; }
+
+.ticket-body { padding: 1.8rem; }
+.ticket-code-box {
+  margin: 0 0 1.4rem; background: var(--mist);
+  border-radius: 14px; padding: 1.2rem; text-align: center;
+  border: 1.5px dashed var(--moss);
+}
+.ticket-code-label {
+  font-size: 0.72rem; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 2px;
+}
+.ticket-code {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem; font-weight: 700; color: var(--forest);
+  letter-spacing: 4px; margin-top: 0.3rem;
+}
+
+.ticket-row {
+  display: flex; justify-content: space-between;
+  padding: 0.5rem 0; font-size: 0.87rem;
+  border-bottom: 1px solid var(--border);
+}
+.ticket-row:last-of-type { border-bottom: none; }
+.tl { color: var(--muted); }
+.tv { font-weight: 600; color: var(--ink); }
+.ticket-footer {
+  padding: 1rem 1.8rem; background: var(--mist);
+  text-align: center; font-size: 0.8rem; color: var(--muted);
+}
+.btn-nuevo {
+  display: block; width: 100%;
+  background: var(--forest); color: white;
+  border: none; padding: 1rem; border-radius: 50px;
+  font-size: 0.95rem; font-weight: 600; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  margin-top: 1.5rem; transition: background 0.2s;
+}
+.btn-nuevo:hover { background: var(--moss); }
+
+/* FOOTER */
+footer {
+  text-align: center; padding: 2rem;
+  background: var(--ink); color: rgba(255,255,255,0.35);
+  font-size: 0.82rem; margin-bottom: 0;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* RESPONSIVE */
+@media (max-width: 860px) {
+  .service-section, .prendas-section { padding: 3rem 1.5rem; }
+  .service-cards { grid-template-columns: 1fr 1fr; }
+  .hero-servicios-inner { padding: 3rem 1.5rem; }
+  .checkout-grid { grid-template-columns: 1fr; }
+  .floating-bar { padding: 1rem 1.5rem; }
+  header { padding: 1rem 1.2rem; }
+  nav a { margin-left: 0.8rem; font-size: 0.78rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== PAGE SERVICIOS ===== -->
+<div id="page-servicios" class="page visible">
+
+<header>
+  <div class="logo">🌿 Eco<em>Wash</em></div>
+  <nav>
+    <a th:href="@{/}">Inicio</a>
+    <a th:href="@{/nosotros}">Nosotros</a>
+    <a th:href="@{/login}">Iniciar Sesión</a>
+    <a th:href="@{/registro}">Registrarse</a>
+    <a th:href="@{/servicios}">Servicios</a>
+    <a th:href="@{/contacto}">Contacto</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero-servicios">
+  <div class="hero-watermark">Wash</div>
+  <div class="hero-servicios-inner">
+    <span class="hero-eyebrow">Lo que ofrecemos</span>
+    <h1 class="hero-title">Elige el cuidado<br>que tu ropa<br><em>merece</em></h1>
+    <p class="hero-sub">Selecciona el tipo de servicio y las prendas que deseas procesar. Todo con productos biodegradables y entrega a domicilio en Lima.</p>
+  </div>
+</section>
+
+<!-- TIPO DE SERVICIO -->
+<section class="service-section">
+  <p class="section-label reveal">Tipo de servicio</p>
+  <h2 class="section-title reveal reveal-delay-1">¿Qué necesitas <em>hoy?</em></h2>
+
+  <div class="service-cards">
+    <div class="card reveal reveal-delay-1" onclick="selectService(this,'Lavado')">
+      <div class="card-check">✓</div>
+      <span class="card-icon">🧼</span>
+      <div class="card-title">Lavado</div>
+      <div class="card-desc">Limpieza profunda con productos ecológicos que eliminan manchas sin dañar las fibras.</div>
+    </div>
+    <div class="card reveal reveal-delay-2" onclick="selectService(this,'Secado')">
+      <div class="card-check">✓</div>
+      <span class="card-icon">🌬️</span>
+      <div class="card-title">Secado</div>
+      <div class="card-desc">Secado a baja temperatura para conservar la calidad y forma original de cada prenda.</div>
+    </div>
+    <div class="card reveal reveal-delay-3" onclick="selectService(this,'Planchado')">
+      <div class="card-check">✓</div>
+      <span class="card-icon">🔥</span>
+      <div class="card-title">Planchado</div>
+      <div class="card-desc">Planchado profesional con vapor para dejar tus prendas perfectas y listas para usar.</div>
+    </div>
+    <div class="card reveal reveal-delay-3" onclick="selectService(this,'Completo')">
+      <div class="card-check">✓</div>
+      <span class="card-icon">✨</span>
+      <div class="card-title">Completo</div>
+      <div class="card-desc">Lavado + Secado + Planchado. La opción más conveniente y con descuento especial.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRENDAS -->
+<section class="prendas-section">
+  <p class="section-label reveal">Selecciona tus prendas</p>
+  <h2 class="section-title reveal reveal-delay-1">¿Cuántas prendas <em>tienes?</em></h2>
+
+  <!-- ROPA SUPERIOR -->
+  <div class="category-label reveal">👔 Ropa superior</div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>👔 Camisa</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 15.90 – S/ 22.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Camisa Clásica</span>
+        <span class="sub-item-price">S/ 15.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,15.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,15.9)">+</button>
+        </div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-item-name">Camisa Seda / Hilo / Lino / Gamuza</span>
+        <span class="sub-item-price">S/ 22.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,22.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,22.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>👚 Blusa</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 18.00 – S/ 24.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Blusa Clásica</span>
+        <span class="sub-item-price">S/ 18.00</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,18)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,18)">+</button>
+        </div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-item-name">Blusa Aplicaciones / Seda / Hilo / Lino</span>
+        <span class="sub-item-price">S/ 24.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,24.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,24.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>👕 Polo / Top</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 18.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Polo / Top</span>
+        <span class="sub-item-price">S/ 18.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,18.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,18.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROPA INFERIOR & VESTIDOS -->
+  <div class="category-label reveal">👗 Ropa inferior & vestidos</div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>👖 Pantalón</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 20.90 – S/ 25.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Pantalón Simple / Jean</span>
+        <span class="sub-item-price">S/ 20.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,20.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,20.9)">+</button>
+        </div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-item-name">Pantalón Seda / Terciopelo / Lino</span>
+        <span class="sub-item-price">S/ 25.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,25.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,25.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>👗 Falda</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 32.00</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Falda</span>
+        <span class="sub-item-price">S/ 32.00</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,32)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,32)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>🩳 Short</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 15.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Short</span>
+        <span class="sub-item-price">S/ 15.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,15.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,15.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>👘 Vestido</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 28.90 – S/ 82.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Vestido Clásico</span>
+        <span class="sub-item-price">S/ 28.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,28.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,28.9)">+</button>
+        </div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-item-name">Vestido Largo / Seda / Lino / Gasa</span>
+        <span class="sub-item-price">S/ 49.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,49.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,49.9)">+</button>
+        </div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-item-name">Vestido Aplicaciones / Adornos</span>
+        <span class="sub-item-price">S/ 82.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,82.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,82.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>🤵 Terno</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 36.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Terno</span>
+        <span class="sub-item-price">S/ 36.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,36.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,36.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABRIGOS & CHAQUETAS -->
+  <div class="category-label reveal">🧥 Abrigos & chaquetas</div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>🧥 Saco</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 25.90 – S/ 39.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Saco Clásico</span>
+        <span class="sub-item-price">S/ 25.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,25.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,25.9)">+</button>
+        </div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-item-name">Saco Cashmire / Alpaca</span>
+        <span class="sub-item-price">S/ 39.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,39.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,39.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>🧥 Sacón</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 34.90 – S/ 49.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Sacón Clásico</span>
+        <span class="sub-item-price">S/ 34.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,34.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,34.9)">+</button>
+        </div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-item-name">Sacón Cashmire / Alpaca</span>
+        <span class="sub-item-price">S/ 49.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,49.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,49.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>🧥 Abrigo</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 49.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Abrigo</span>
+        <span class="sub-item-price">S/ 49.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,49.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,49.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>🥼 Casaca</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 25.90 – S/ 85.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Casaca Clásica</span>
+        <span class="sub-item-price">S/ 25.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,25.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,25.9)">+</button>
+        </div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-item-name">Casaca Plumas / Lana / Piel</span>
+        <span class="sub-item-price">S/ 49.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,49.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,49.9)">+</button>
+        </div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-item-name">Casaca Aplicaciones / Bordado</span>
+        <span class="sub-item-price">S/ 36.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,36.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,36.9)">+</button>
+        </div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-item-name">Casaca Gamuza / Nobuck / Peluche</span>
+        <span class="sub-item-price">S/ 85.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,85.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,85.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>🦺 Chaleco</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 22.90 – S/ 39.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Chaleco Clásico</span>
+        <span class="sub-item-price">S/ 22.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,22.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,22.9)">+</button>
+        </div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-item-name">Chaleco Aplicaciones / Cashmire / Alpaca</span>
+        <span class="sub-item-price">S/ 32.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,32.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,32.9)">+</button>
+        </div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-item-name">Chaleco Lino / Hilo / Plumas</span>
+        <span class="sub-item-price">S/ 39.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,39.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,39.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>🧶 Chompa</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 24.90 – S/ 29.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Chompa Clásica</span>
+        <span class="sub-item-price">S/ 24.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,24.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,24.9)">+</button>
+        </div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-item-name">Chompa Cashmire / Alpaca / Lana / Terciopelo</span>
+        <span class="sub-item-price">S/ 29.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,29.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,29.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROPA DE CAMA -->
+  <div class="category-label reveal">🛏️ Ropa de cama</div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>🛏️ Edredón</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 50.90 – S/ 69.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Edredón Clásico</span>
+        <span class="sub-item-price">S/ 50.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,50.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,50.9)">+</button>
+        </div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-item-name">Edredón Plumas</span>
+        <span class="sub-item-price">S/ 54.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,54.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,54.9)">+</button>
+        </div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-item-name">Edredón Cashmire / Alpaca / Seda</span>
+        <span class="sub-item-price">S/ 69.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,69.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,69.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>🛏️ Sábana</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 20.00</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Sábana</span>
+        <span class="sub-item-price">S/ 20.00</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,20)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,20)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>🛏️ Cubrecama</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 43.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Cubrecama Clásico</span>
+        <span class="sub-item-price">S/ 43.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,43.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,43.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>🛏️ Funda</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 15.90</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Funda</span>
+        <span class="sub-item-price">S/ 15.90</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,15.9)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,15.9)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item reveal">
+    <div class="item-header" onclick="toggleItem(this)">
+      <span>🛡️ Protector de Colchón</span>
+      <div class="item-header-right">
+        <span class="price-range">S/ 32.00</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="item-body">
+      <div class="sub-item">
+        <span class="sub-item-name">Protector de Colchón</span>
+        <span class="sub-item-price">S/ 32.00</span>
+        <div class="contador">
+          <button onclick="cambiar(this,-1,32)">−</button>
+          <input value="0" readonly>
+          <button onclick="cambiar(this,1,32)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<footer><p>&copy; 2025 EcoWash — Cuidando tu ropa y el planeta 🌿</p></footer>
+
+<!-- FLOATING BAR -->
+<div class="floating-bar" id="floatingBar">
+  <div class="fb-left">
+    <span class="fb-label">Total estimado</span>
+    <div class="fb-amount">S/ <span id="total">0.00</span></div>
+  </div>
+  <button class="btn-reservar" onclick="irACheckout()">Reservar pedido →</button>
+</div>
+
+</div><!-- end page-servicios -->
+
+
+<!-- ===== PAGE CHECKOUT ===== -->
+<div id="page-checkout" class="page">
+
+<header>
+  <div class="logo">🌿 Eco<em>Wash</em></div>
+  <nav><a th:href="@{/contacto}">Contacto</a></nav>
+</header>
+
+<div class="checkout-wrap">
+  <div class="checkout-hdr">
+    <button class="btn-back" onclick="goBack('page-servicios')">← Volver</button>
+    <div class="checkout-hdr-title">Confirmar pedido</div>
+  </div>
+
+  <div class="checkout-grid">
+    <!-- RESUMEN -->
+    <div class="checkout-card">
+      <div class="checkout-card-title">🧾 Resumen</div>
+      <div id="summaryItems"></div>
+      <div class="summary-service" id="summaryService"></div>
+      <div class="summary-total">
+        <span>Total</span>
+        <span>S/ <span id="totalCheckout">0.00</span></span>
+      </div>
+      <p style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem">Precios incluyen IGV</p>
+    </div>
+
+    <!-- FORM -->
+    <div class="checkout-card">
+      <div class="checkout-card-title">📋 Datos del pedido</div>
+
+      <div class="field">
+        <label>Nombre completo</label>
+        <input type="text" id="nombreCliente" placeholder="Ej. María García">
+      </div>
+      <div class="field">
+        <label>Teléfono</label>
+        <input type="tel" id="telefonoCliente" placeholder="Ej. 987 654 321">
+      </div>
+      <div class="field">
+        <label>Dirección de recojo</label>
+        <input type="text" id="direccionCliente" placeholder="Calle, número, distrito">
+      </div>
+
+      <label style="font-size:0.72rem;font-weight:500;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:0.5rem">Tipo de entrega</label>
+      <div class="mode-tabs">
+        <div class="mode-tab active" onclick="selectMode(this,'recojo')">🏠 Recojo</div>
+        <div class="mode-tab" onclick="selectMode(this,'envio')">🚚 Envío</div>
+      </div>
+
+      <div class="field">
+        <label>Fecha</label>
+        <input type="date" id="fechaPedido">
+      </div>
+      <div class="field">
+        <label>Horario preferido</label>
+        <select id="horarioPedido">
+          <option value="">Selecciona un horario</option>
+          <option>8:00 AM – 10:00 AM</option>
+          <option>10:00 AM – 12:00 PM</option>
+          <option>12:00 PM – 2:00 PM</option>
+          <option>2:00 PM – 4:00 PM</option>
+          <option>4:00 PM – 6:00 PM</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Instrucciones adicionales</label>
+        <textarea id="instrucciones" placeholder="Ej. Dejar con el portero, timbre roto…"></textarea>
+      </div>
+
+      <button class="btn-pagar" onclick="pagarPedido()">💳 Pagar — S/ <span id="totalPagar">0.00</span></button>
+    </div>
+  </div>
+</div>
+</div><!-- end page-checkout -->
+
+
+<!-- ===== PAGE TICKET ===== -->
+<div id="page-ticket" class="page">
+
+<header>
+  <div class="logo">🌿 Eco<em>Wash</em></div>
+</header>
+
+<div class="ticket-wrap">
+  <div class="ticket">
+    <div class="ticket-top">
+      <span class="ticket-check">✅</span>
+      <h2>¡Pedido confirmado!</h2>
+      <p>Tu ropa está en buenas manos 🌿</p>
+    </div>
+    <div class="ticket-dashes">
+      <div class="ticket-hole left"></div>
+      <div class="ticket-hole right"></div>
+    </div>
+    <div class="ticket-body">
+      <div class="ticket-code-box">
+        <div class="ticket-code-label">Código de seguimiento</div>
+        <div class="ticket-code" id="ticketCodigo">ECO-0000</div>
+      </div>
+      <div class="ticket-row"><span class="tl">👤 Cliente</span><span class="tv" id="tNombre">—</span></div>
+      <div class="ticket-row"><span class="tl">📞 Teléfono</span><span class="tv" id="tTelefono">—</span></div>
+      <div class="ticket-row"><span class="tl">📍 Dirección</span><span class="tv" id="tDireccion">—</span></div>
+      <div class="ticket-row"><span class="tl">🗓️ Fecha</span><span class="tv" id="tFecha">—</span></div>
+      <div class="ticket-row"><span class="tl">⏰ Horario</span><span class="tv" id="tHorario">—</span></div>
+      <div class="ticket-row"><span class="tl">🚚 Entrega</span><span class="tv" id="tModo">—</span></div>
+      <div class="ticket-row"><span class="tl">🧼 Servicio</span><span class="tv" id="tServicio">—</span></div>
+      <div class="ticket-row" style="border-top:2px solid var(--border);margin-top:0.6rem;padding-top:0.6rem">
+        <span class="tl" style="font-weight:600;color:var(--ink)">💰 Total pagado</span>
+        <span class="tv" style="font-size:1.1rem;color:var(--forest)" id="tTotal">—</span>
+      </div>
+    </div>
+    <div class="ticket-footer">
+      Guarda este código para rastrear tu pedido<br>
+      📞 Soporte: <strong>+51 987 654 321</strong>
+    </div>
+  </div>
+  <button class="btn-nuevo" onclick="nuevoPedido()">+ Hacer otro pedido</button>
+</div>
+</div><!-- end page-ticket -->
+
+<script>
+let total = 0;
+let selectedService = '';
+let selectedMode = 'recojo';
+let itemsList = [];
+
+function toggleItem(el) { el.parentElement.classList.toggle('active'); }
+
+function cambiar(btn, valor, precio) {
+  let input = btn.parentElement.querySelector('input');
+  let cantidad = parseInt(input.value);
+  if (valor === -1 && cantidad === 0) return;
+  cantidad += valor;
+  input.value = cantidad;
+  total = Math.max(0, total + valor * precio);
+  document.getElementById('total').innerText = total.toFixed(2);
+  let nombre = btn.closest('.sub-item').querySelector('.sub-item-name').innerText;
+  let idx = itemsList.findIndex(i => i.nombre === nombre);
+  if (idx > -1) {
+    itemsList[idx].cantidad = cantidad;
+    if (cantidad === 0) itemsList.splice(idx, 1);
+  } else if (cantidad > 0) {
+    itemsList.push({ nombre, precio, cantidad });
+  }
+  let bar = document.getElementById('floatingBar');
+  if (total > 0) bar.classList.add('visible');
+  else bar.classList.remove('visible');
+}
+
+function selectService(el, name) {
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  selectedService = name;
+}
+
+function selectMode(el, mode) {
+  selectedMode = mode;
+  document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function irACheckout() {
+  if (total === 0) { alert('Agrega al menos una prenda para continuar.'); return; }
+  let html = '';
+  itemsList.filter(i => i.cantidad > 0).forEach(i => {
+    html += `<div class="summary-item"><span>${i.cantidad}× ${i.nombre}</span><span>S/ ${(i.cantidad * i.precio).toFixed(2)}</span></div>`;
+  });
+  document.getElementById('summaryItems').innerHTML = html;
+  document.getElementById('summaryService').innerText = selectedService ? `Servicio: ${selectedService}` : 'Servicio: no seleccionado';
+  document.getElementById('totalCheckout').innerText = total.toFixed(2);
+  document.getElementById('totalPagar').innerText = total.toFixed(2);
+  document.getElementById('fechaPedido').value = new Date().toISOString().split('T')[0];
+  showPage('page-checkout');
+}
+
+function pagarPedido() {
+  let nombre = document.getElementById('nombreCliente').value.trim();
+  let tel = document.getElementById('telefonoCliente').value.trim();
+  let dir = document.getElementById('direccionCliente').value.trim();
+  let fecha = document.getElementById('fechaPedido').value;
+  let horario = document.getElementById('horarioPedido').value;
+  if (!nombre || !tel || !dir || !fecha || !horario) { alert('Por favor completa todos los campos.'); return; }
+  let codigo = 'ECO-' + Math.floor(1000 + Math.random() * 9000);
+  document.getElementById('ticketCodigo').innerText = codigo;
+  document.getElementById('tNombre').innerText = nombre;
+  document.getElementById('tTelefono').innerText = tel;
+  document.getElementById('tDireccion').innerText = dir;
+  let fechaObj = new Date(fecha + 'T12:00:00');
+  document.getElementById('tFecha').innerText = fechaObj.toLocaleDateString('es-PE', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  document.getElementById('tHorario').innerText = horario;
+  document.getElementById('tModo').innerText = selectedMode === 'recojo' ? '🏠 Recojo en domicilio' : '🚚 Envío a domicilio';
+  document.getElementById('tServicio').innerText = selectedService || 'No especificado';
+  document.getElementById('tTotal').innerText = 'S/ ' + total.toFixed(2);
+  showPage('page-ticket');
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('visible'));
+  document.getElementById(id).classList.add('visible');
+  window.scrollTo(0, 0);
+}
+function goBack(id) { showPage(id); }
+function nuevoPedido() {
+  total = 0; itemsList = []; selectedService = '';
+  document.querySelectorAll('.contador input').forEach(i => i.value = 0);
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+  document.getElementById('total').innerText = '0.00';
+  document.getElementById('floatingBar').classList.remove('visible');
+  showPage('page-servicios');
+}
+
+// Reveal on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

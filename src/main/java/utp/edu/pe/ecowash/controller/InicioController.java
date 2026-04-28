@@ -51,6 +51,16 @@ public class InicioController {
         public String contacto() {
         return "contacto";
     }
+    @GetMapping("/servicios")
+    public String servicios() {
+    return "services";
+    }
+    @GetMapping("/nosotros")
+    public String nosotros() {
+        return "nosotros";
+    }
+    
+    
 
     /**
      * Función POST para procesar el registro y guardar en la base de datos.
@@ -58,8 +68,8 @@ public class InicioController {
     
     @PostMapping("/registro")
     public String procesarRegistro(@RequestParam("nombre") String nombre,
-                                   @RequestParam("email") String email,
-                                   @RequestParam("password") String password) {
+                                    @RequestParam("email") String email,
+                                    @RequestParam("password") String password) {
         
         // 1. Creamos la instancia del nuevo Cliente
         Cliente nuevoCliente = new Cliente();
