@@ -151,18 +151,33 @@ public class PedidoController {
     @ResponseBody
     public ResponseEntity<?> obtenerDatosRastreo(@RequestParam String codigo) {
         return pedidoRepository.findByCodigo(codigo.trim())
-                .map(p -> {
-                    // Creamos un mapa simple para no enviar toda la entidad pesada
-                    return ResponseEntity.ok(java.util.Map.of(
-                        "codigo", p.getCodigo(),
-                        "servicio", p.getServicioElegido(),
-                        "estado", p.getEstado().toString(),
-                        "total", p.getTotal(),
-                        "nombre", p.getNombreReceptor(),
-                        "direccion", p.getDireccionServicio(),
-                        "fecha", p.getFechaServicio().toString()
-                    ));
-                })
-                .orElse(ResponseEntity.notFound().build());
+            .map(p -> {
+                // Formatear la lista de prendas (items)
+                List<java.util.Map<String, Object>> itemsList = p.getItems().stream()
+                    .map(item -> {
+                        java.util.Map<String, Object> i = new java.util.HashMap<>();
+                        i.put("nombre", item.getNombrePrenda());
+                        i.put("cantidad", item.getCantidad());
+                        return i;
+                    }).toList();
+
+                // Usamos HashMap porque Map.of() tiene un límite de 10 elementos en Java
+                java.util.Map<String, Object> res = new java.util.HashMap<>();
+                res.put("codigo", p.getCodigo());
+                res.put("servicio", p.getServicioElegido());
+                res.put("estado", p.getEstado().toString());
+                res.put("total", p.getTotal());
+                res.put("nombre", p.getNombreReceptor());
+                res.put("telefono", p.getTelefonoContacto());
+                res.put("direccion", p.getDireccionServicio());
+                res.put("fecha", p.getFechaServicio().toString());
+                res.put("horario", p.getHorario());
+                res.put("modo", p.getTipoEntrega());
+                res.put("instrucciones", p.getInstrucciones() != null ? p.getInstrucciones() : "Ninguna");
+                res.put("items", itemsList);
+
+                return ResponseEntity.ok(res);
+            })
+            .orElse(ResponseEntity.notFound().build());
     }
 }

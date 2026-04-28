@@ -263,14 +263,21 @@
         <div id="list-proceso" class="ticket-list active">
             <div th:each="pedido : ${pedidosProceso}" class="ticket-card" th:data-codigo="${pedido.codigo}"
                 th:data-servicio="${pedido.servicioElegido ?: 'Estandar'}" th:data-estado="${pedido.estado}"
-                th:data-total="${pedido.total}" onclick="verDetalleTicket(this)">
+                th:data-total="${pedido.total}" th:data-nombre="${pedido.nombreReceptor}"
+                th:data-tel="${pedido.telefonoContacto}" th:data-dir="${pedido.direccionServicio}"
+                th:data-fecha="${pedido.fechaServicio}" th:data-horario="${pedido.horario}"
+                th:data-modo="${pedido.tipoEntrega}" th:data-inst="${pedido.instrucciones ?: 'Ninguna'}"
+                onclick="verDetalleTicket(this)">
 
                 <div class="tc-info">
                     <span class="tc-codigo" th:text="${pedido.codigo}">ECO-XXXX</span>
-                    <span class="tc-fecha" th:text="'Fecha de servicio: ' + ${pedido.fechaServicio}">Fecha de
-                        servicio</span>
+                    <span class="tc-fecha" th:text="'Fecha: ' + ${pedido.fechaServicio}">Fecha</span>
                 </div>
                 <span class="tc-estado estado-proceso" th:text="${pedido.estado}">ESTADO</span>
+
+                <ul class="hidden-items" style="display:none;">
+                    <li th:each="item : ${pedido.items}" th:text="${item.cantidad} + 'x ' + ${item.nombrePrenda}"></li>
+                </ul>
             </div>
 
             <div th:if="${#lists.isEmpty(pedidosProceso)}" style="text-align: center; color: #6b7f6e; padding: 2rem;">
@@ -281,41 +288,103 @@
         <div id="list-historial" class="ticket-list">
             <div th:each="pedido : ${pedidosHistorial}" class="ticket-card" th:data-codigo="${pedido.codigo}"
                 th:data-servicio="${pedido.servicioElegido ?: 'Estandar'}" th:data-estado="${pedido.estado}"
-                th:data-total="${pedido.total}" onclick="verDetalleTicket(this)">
+                th:data-total="${pedido.total}" th:data-nombre="${pedido.nombreReceptor}"
+                th:data-tel="${pedido.telefonoContacto}" th:data-dir="${pedido.direccionServicio}"
+                th:data-fecha="${pedido.fechaServicio}" th:data-horario="${pedido.horario}"
+                th:data-modo="${pedido.tipoEntrega}" th:data-inst="${pedido.instrucciones ?: 'Ninguna'}"
+                onclick="verDetalleTicket(this)">
 
                 <div class="tc-info">
                     <span class="tc-codigo" th:text="${pedido.codigo}">ECO-XXXX</span>
-                    <span class="tc-fecha" th:text="'Fecha de servicio: ' + ${pedido.fechaServicio}">Fecha de
-                        servicio</span>
+                    <span class="tc-fecha" th:text="'Fecha: ' + ${pedido.fechaServicio}">Fecha</span>
                 </div>
                 <span class="tc-estado estado-terminado" th:text="${pedido.estado}">ESTADO</span>
+
+                <ul class="hidden-items" style="display:none;">
+                    <li th:each="item : ${pedido.items}" th:text="${item.cantidad} + 'x ' + ${item.nombrePrenda}"></li>
+                </ul>
+            </div>
+
+            <div th:if="${#lists.isEmpty(pedidosHistorial)}" style="text-align: center; color: #6b7f6e; padding: 2rem;">
+                Aún no tienes un historial de pedidos terminados.
             </div>
         </div>
 
-        <div id="ticket-viewer" class="ticket-viewer">
-            <button class="btn-volver" onclick="cerrarTicket()">← Volver</button>
-            <div class="ticket-top">
-                <h2 id="tv-estado">Estado</h2>
+        <div id="ticket-viewer" class="ticket-viewer"
+            style="background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); max-width: 450px; margin: 2rem auto; overflow: hidden; display: none;">
+            <div class="ticket-top"
+                style="background: var(--forest, #1e4d2b); color: white; padding: 2rem; text-align: center; position: relative;">
+                <button class="btn-volver" onclick="cerrarTicket()"
+                    style="position: absolute; top: 1rem; left: 1rem; background: rgba(255,255,255,0.2); border: none; color: white; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; font-weight: bold;">←
+                    Volver</button>
+                <h2 id="tv-estado"
+                    style="margin: 0; font-family: 'Fraunces', serif; font-size: 1.5rem; margin-top: 10px;">Estado</h2>
             </div>
-            <div class="ticket-body">
-                <div id="tv-codigo" style="text-align:center; font-family:'Fraunces'; font-size:1.5rem;">-</div>
-                <div class="ticket-row"><span>Servicio</span><strong id="tv-servicio">-</strong></div>
-                <div class="ticket-row"><span>Total</span><strong id="tv-total">-</strong></div>
 
-                <button id="btnCancelarPedido" class="btn-cancelar-ticket" onclick="ejecutarCancelacion()">
-                    ❌ Cancelar Pedido
-                </button>
+            <div class="ticket-body" style="padding: 2rem;">
+                <div id="tv-codigo"
+                    style="text-align:center; font-family:'Fraunces', serif; font-size:1.8rem; color:var(--forest, #1e4d2b); margin-bottom:1.5rem; font-weight: bold;">
+                    -</div>
+
+                <div
+                    style="display:flex; justify-content:space-between; border-bottom:1px dashed #e0e0e0; padding: 8px 0; font-size: 0.9rem;">
+                    <span style="color:#666;">Cliente</span><strong id="tv-nombre"
+                        style="color:#222; text-align:right;">-</strong>
+                </div>
+                <div
+                    style="display:flex; justify-content:space-between; border-bottom:1px dashed #e0e0e0; padding: 8px 0; font-size: 0.9rem;">
+                    <span style="color:#666;">Teléfono</span><strong id="tv-tel"
+                        style="color:#222; text-align:right;">-</strong>
+                </div>
+                <div
+                    style="display:flex; justify-content:space-between; border-bottom:1px dashed #e0e0e0; padding: 8px 0; font-size: 0.9rem;">
+                    <span style="color:#666;">Dirección</span><strong id="tv-dir"
+                        style="color:#222; text-align:right;">-</strong>
+                </div>
+                <div
+                    style="display:flex; justify-content:space-between; border-bottom:1px dashed #e0e0e0; padding: 8px 0; font-size: 0.9rem;">
+                    <span style="color:#666;">Fecha / Hora</span><strong id="tv-fechahora"
+                        style="color:#222; text-align:right;">-</strong>
+                </div>
+                <div
+                    style="display:flex; justify-content:space-between; border-bottom:1px dashed #e0e0e0; padding: 8px 0; font-size: 0.9rem;">
+                    <span style="color:#666;">Entrega</span><strong id="tv-modo"
+                        style="color:#222; text-align:right;">-</strong>
+                </div>
+                <div
+                    style="display:flex; justify-content:space-between; border-bottom:1px dashed #e0e0e0; padding: 8px 0; font-size: 0.9rem;">
+                    <span style="color:#666;">Servicio</span><strong id="tv-servicio"
+                        style="color:#222; text-align:right;">-</strong>
+                </div>
+
+                <div
+                    style="margin-top:1.5rem; border-radius: 8px; background: #f9f9f9; padding: 1rem; border: 1px solid #eee;">
+                    <p
+                        style="font-size:0.75rem; color:#888; font-weight:bold; margin-bottom:0.5rem; text-transform:uppercase; letter-spacing: 1px;">
+                        Prendas Procesadas</p>
+                    <ul id="tv-items-list"
+                        style="list-style:none; padding:0; font-size:0.9rem; margin:0; color:#333; line-height:1.6;">
+                    </ul>
+                </div>
+
+                <div
+                    style="margin-top:1rem; font-size:0.85rem; color:#666; background: #fff8e1; padding: 10px; border-radius: 6px; border-left: 3px solid #ffc107;">
+                    <strong style="color: #b08d00;">Instrucciones:</strong> <span id="tv-inst">-</span>
+                </div>
+
+                <div
+                    style="display:flex; justify-content:space-between; border-top:2px solid #333; margin-top:1.5rem; padding-top:1rem; font-size:1.2rem;">
+                    <span style="font-weight:700; color:#222;">Total</span><strong id="tv-total"
+                        style="color:var(--moss, #3a7d50);">-</strong>
+                </div>
+
+                <button id="btnCancelarPedido" class="btn-cancelar-ticket" onclick="ejecutarCancelacion()">❌ Cancelar
+                    Pedido</button>
                 <p id="msgCancelado" class="hidden"
-                    style="color: #d9534f; font-size: 0.8rem; text-align: center; margin-top: 10px;">
-                    Este pedido ha sido cancelado.
-                </p>
+                    style="color:#d9534f; font-size:0.85rem; text-align:center; margin-top:15px; font-weight: bold; background: #fdf2f2; padding: 10px; border-radius: 6px;">
+                    Este pedido ha sido cancelado.</p>
             </div>
         </div>
-
-
-
-
-
     </div>
 
     <div th:replace="~{fragments/perfilModal :: modal}"></div>
@@ -324,37 +393,43 @@
     <script>
         // 1. Lógica para mostrar el ticket y controlar los botones
         function verDetalleTicket(elementoCard) {
+            // Extraer atributos
             const codigo = elementoCard.getAttribute('data-codigo');
             const servicio = elementoCard.getAttribute('data-servicio');
             const estado = String(elementoCard.getAttribute('data-estado')).trim().toUpperCase();
             const total = 'S/ ' + parseFloat(elementoCard.getAttribute('data-total')).toFixed(2);
 
-            document.querySelectorAll('.ticket-list').forEach(el => el.classList.remove('active'));
-            document.getElementById('tabs-container').style.display = 'none';
-
+            // Llenar campos de UI
             document.getElementById('tv-codigo').innerText = codigo;
             document.getElementById('tv-servicio').innerText = servicio;
             document.getElementById('tv-estado').innerText = estado;
             document.getElementById('tv-total').innerText = total;
+            document.getElementById('tv-nombre').innerText = elementoCard.getAttribute('data-nombre');
+            document.getElementById('tv-tel').innerText = elementoCard.getAttribute('data-tel');
+            document.getElementById('tv-dir').innerText = elementoCard.getAttribute('data-dir');
+            document.getElementById('tv-fechahora').innerText = elementoCard.getAttribute('data-fecha') + " (" + elementoCard.getAttribute('data-horario') + ")";
+            document.getElementById('tv-modo').innerText = elementoCard.getAttribute('data-modo') === 'ENVIO' ? '🚚 Envío' : '🏠 Recojo';
+            document.getElementById('tv-inst').innerText = elementoCard.getAttribute('data-inst');
 
-            const btnCancelar = document.getElementById('btnCancelarPedido');
-            const msgCancelado = document.getElementById('msgCancelado');
+            // Extraer la lista de prendas y clonarla en el ticket
+            const listaPrendas = elementoCard.querySelector('.hidden-items').innerHTML;
+            document.getElementById('tv-items-list').innerHTML = listaPrendas;
+
+            // Mostrar UI y evaluar estado para el botón de cancelar
+            document.querySelectorAll('.ticket-list').forEach(el => el.classList.remove('active'));
+            document.getElementById('tabs-container').style.display = 'none';
+            document.getElementById('ticket-viewer').style.display = 'block';
+
+            const btn = document.getElementById('btnCancelarPedido');
+            const msg = document.getElementById('msgCancelado');
 
             if (estado === 'CANCELADO') {
-                btnCancelar.style.display = 'none';
-                msgCancelado.style.display = 'block';
-                msgCancelado.classList.remove('hidden');
+                btn.style.display = 'none'; msg.style.display = 'block'; msg.classList.remove('hidden');
             } else if (estado === 'ENTREGADO') {
-                btnCancelar.style.display = 'none';
-                msgCancelado.style.display = 'none';
-                msgCancelado.classList.add('hidden');
+                btn.style.display = 'none'; msg.style.display = 'none'; msg.classList.add('hidden');
             } else {
-                btnCancelar.style.display = 'block';
-                msgCancelado.style.display = 'none';
-                msgCancelado.classList.add('hidden');
+                btn.style.display = 'block'; msg.style.display = 'none'; msg.classList.add('hidden');
             }
-
-            document.getElementById('ticket-viewer').style.display = 'block';
         }
 
         // 2. Lógica de Cancelación con API
@@ -364,13 +439,13 @@
 
             const res = await fetch(`/api/pedidos/cancelar/${codigo}`, {
                 method: 'POST',
-                headers: getAuthHeaders() 
+                headers: getAuthHeaders()
             });
 
             if (res.ok) {
                 const data = await res.json();
                 alert(`Pedido Cancelado.\nMonto a devolver: S/ ${data.reembolso.toFixed(2)}\nEl repartidor pasará por la dirección para devolver las prendas si aplica.`);
-                location.reload(); 
+                location.reload();
             }
         }
 

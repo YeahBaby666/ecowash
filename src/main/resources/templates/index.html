@@ -768,37 +768,45 @@
                     style="background: var(--forest, #1e4d2b); color: white; padding: 2rem 1.5rem 1.5rem; text-align:center; position: relative;">
                     <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">🌿</span>
                     <h3 id="m-estado"
-                        style="margin:0; font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 500;">
-                        -</h3>
+                        style="margin:0; font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 500;">-</h3>
                 </div>
 
-                <div style="padding: 2rem 2.5rem; background: #ffffff;">
+                <div style="padding: 2rem; background: #ffffff;">
                     <div id="m-codigo"
                         style="text-align:center; font-family:'Fraunces', serif; font-size:1.8rem; color:var(--forest, #1e4d2b); margin-bottom: 1.5rem; font-weight: 700;">
                         ECO-0000</div>
 
                     <div
-                        style="display:flex; justify-content:space-between; border-bottom:1px dashed var(--border, #d4e3d8); padding: 10px 0; font-size: 0.95rem;">
-                        <span style="color: var(--muted, #6b7f6e);">Servicio</span><strong id="m-servicio"
-                            style="color: var(--ink, #1a2218);">-</strong>
+                        style="display:flex; justify-content:space-between; border-bottom:1px dashed #e0e0e0; padding: 8px 0; font-size: 0.95rem;">
+                        <span style="color: #666;">Servicio</span><strong id="m-servicio"
+                            style="color: #222; text-align:right;">-</strong>
                     </div>
 
                     <div
-                        style="display:flex; justify-content:space-between; border-bottom:1px dashed var(--border, #d4e3d8); padding: 10px 0; font-size: 0.95rem;">
-                        <span style="color: var(--muted, #6b7f6e);">Cliente</span><span id="m-cliente"
-                            style="color: var(--ink, #1a2218); font-weight: 500;">-</span>
+                        style="display:flex; justify-content:space-between; border-bottom:1px dashed #e0e0e0; padding: 8px 0; font-size: 0.95rem;">
+                        <span style="color: #666;">Cliente</span><span id="m-cliente"
+                            style="color: #222; font-weight: 500; text-align:right;">-</span>
                     </div>
 
                     <div
-                        style="display:flex; justify-content:space-between; border-bottom:2px solid var(--border, #d4e3d8); padding: 12px 0; margin-top: 5px; font-size: 1.1rem;">
-                        <span style="color: var(--ink, #1a2218); font-weight: 700;">Total
-                            Pagado</span><strong id="m-total" style="color: var(--moss, #3a7d50);">-</strong>
+                        style="margin-top:1.5rem; border-radius: 8px; background: #f9f9f9; padding: 1rem; border: 1px solid #eee;">
+                        <p
+                            style="font-size:0.75rem; color:#888; font-weight:bold; margin-bottom:0.5rem; text-transform:uppercase; letter-spacing: 1px;">
+                            Prendas Procesadas</p>
+                        <ul id="m-items"
+                            style="list-style:none; padding:0; font-size:0.9rem; margin:0; color:#333; line-height:1.6;">
+                        </ul>
+                    </div>
+
+                    <div
+                        style="display:flex; justify-content:space-between; border-top:2px solid #333; padding: 12px 0; margin-top: 1.5rem; font-size: 1.2rem;">
+                        <span style="color: #222; font-weight: 700;">Total</span><strong id="m-total"
+                            style="color: var(--moss, #3a7d50);">-</strong>
                     </div>
 
                     <p
-                        style="font-size:0.8rem; color:var(--muted, #6b7f6e); text-align:center; margin-top:20px; line-height: 1.4;">
-                        📍 Dirección de atención:<br><span id="m-dir"
-                            style="font-weight: 600; color: var(--ink, #1a2218);">-</span>
+                        style="font-size:0.85rem; color:#666; text-align:center; margin-top:20px; line-height: 1.4; background: #f0f7f2; padding: 10px; border-radius: 6px;">
+                        📍 Dirección de atención:<br><span id="m-dir" style="font-weight: 600; color: #222;">-</span>
                     </p>
                 </div>
             </div>
@@ -811,23 +819,32 @@
 
                 try {
                     const res = await fetch(`/api/pedidos/rastrear?codigo=${codigo}`);
-                    if (!res.ok) {
-                        alert("Código de ticket no encontrado.");
-                        return;
-                    }
-                    const p = await res.json();
+                    if (!res.ok) { alert("Código de ticket no encontrado."); return; }
 
-                    // Llenar el modal con los datos del JSON
+                    const p = await res.json(); // Ahora p trae TODOS los datos
+
                     document.getElementById('m-codigo').innerText = p.codigo;
                     document.getElementById('m-estado').innerText = "Estado: " + p.estado;
                     document.getElementById('m-servicio').innerText = p.servicio;
                     document.getElementById('m-total').innerText = "S/ " + p.total.toFixed(2);
-                    document.getElementById('m-cliente').innerText = p.nombre;
+                    document.getElementById('m-cliente').innerText = p.nombre + " (" + p.telefono + ")";
                     document.getElementById('m-dir').innerText = p.direccion;
 
-                    // Abrir modal (Usando la clase .active que ya tienes en tu CSS de perfilModal)
+                    // Pintamos las prendas si existen en el modal de index
+                    // Para esto, deberás agregar un <ul id="m-items"></ul> en tu HTML del modal
+                    const mItems = document.getElementById('m-items');
+                    if (mItems) {
+                        mItems.innerHTML = '';
+                        p.items.forEach(item => {
+                            let li = document.createElement('li');
+                            li.innerText = `${item.cantidad}x ${item.nombre}`;
+                            mItems.appendChild(li);
+                        });
+                    }
+
                     document.getElementById('modalRastreo').classList.add('active');
                 } catch (err) {
+                    console.error(err);
                     alert("Error al conectar con el servidor.");
                 }
             }
