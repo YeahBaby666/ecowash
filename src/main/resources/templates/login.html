@@ -1,45 +1,247 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Iniciar Sesión - EcoWash</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión — EcoWash</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300;1,9..144,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f9; }
-        .auth-container { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 300px; }
-        .form-group { margin-bottom: 1rem; }
-        input[type="text"], input[type="password"] { width: 100%; padding: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        .error { color: red; font-size: 0.9em; margin-bottom: 1rem; }
-        .links { text-align: center; margin-top: 1rem; font-size: 0.9em; }
+        :root {
+            --ink:    #1a2218;
+            --forest: #1e4d2b;
+            --moss:   #3a7d50;
+            --leaf:   #5cb175;
+            --mist:   #e8f2eb;
+            --cream:  #f5f0e8;
+            --sand:   #ede8de;
+            --white:  #ffffff;
+            --muted:  #6b7f6e;
+            --border: #d4e3d8;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ── HEADER (Idéntico a las demás páginas) ── */
+        header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.1rem 2.5rem;
+            background: rgba(245,240,232,0.88);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo {
+            font-family: 'Fraunces', serif;
+            font-size: 1.5rem; font-weight: 700;
+            color: var(--forest); letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+        .logo em { font-style: italic; color: var(--moss); }
+        nav a {
+            margin-left: 1.4rem; text-decoration: none;
+            font-size: 0.875rem; font-weight: 500;
+            color: var(--muted); transition: color 0.2s;
+        }
+        nav a:hover { color: var(--forest); }
+
+        /* ── SECCIÓN DE AUTENTICACIÓN ── */
+        .auth-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 2rem 4rem;
+            position: relative;
+        }
+        /* Efecto de luz verde de fondo */
+        .auth-section::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 20%, rgba(92,177,117,0.15) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── TARJETA DEL FORMULARIO ── */
+        .form-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 3.5rem 3rem;
+            width: 100%;
+            max-width: 440px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 20px 60px rgba(30,77,43,0.06);
+        }
+        .form-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--leaf), var(--moss));
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+        }
+
+        .section-label {
+            font-size: 0.72rem; font-weight: 500; letter-spacing: 3px;
+            text-transform: uppercase; color: var(--moss);
+            margin-bottom: 0.7rem;
+            text-align: center;
+        }
+        .section-title {
+            font-family: 'Fraunces', serif;
+            font-size: 2.2rem;
+            font-weight: 700; color: var(--forest);
+            letter-spacing: -1px; line-height: 1.1;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .section-title em { font-style: italic; font-weight: 300; color: var(--moss); }
+
+        /* ── CAMPOS DEL FORMULARIO ── */
+        .field { margin-bottom: 1.4rem; }
+        .field label {
+            display: block; font-size: 0.72rem; font-weight: 600;
+            color: var(--muted); margin-bottom: 0.45rem;
+            letter-spacing: 1.5px; text-transform: uppercase;
+        }
+        .field input {
+            width: 100%; padding: 0.9rem 1.2rem;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+            color: var(--ink); background: var(--cream); outline: none;
+            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+        .field input:focus {
+            border-color: var(--moss); background: var(--white);
+            box-shadow: 0 0 0 4px rgba(92,177,117,0.1);
+        }
+        .field input::placeholder { color: #aabcb0; }
+
+        /* ── BOTÓN ── */
+        .btn-enviar {
+            width: 100%; background: var(--forest); color: white;
+            border: none; padding: 1.1rem 1.5rem; border-radius: 50px;
+            font-size: 0.95rem; font-weight: 600;
+            font-family: 'DM Sans', sans-serif; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            margin-top: 1rem;
+        }
+        .btn-enviar:hover { 
+            background: var(--moss); 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30,77,43,0.15);
+        }
+
+        /* ── MENSAJE DE ERROR (Spring Security) ── */
+        .error-msg {
+            background: #FFF1F0;
+            border: 1px solid #FF4D4F;
+            color: #A8071A;
+            padding: 0.9rem 1.2rem;
+            border-radius: 12px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* ── LINKS INFERIORES ── */
+        .links {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+        .links a {
+            color: var(--moss);
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .links a:hover { color: var(--forest); text-decoration: underline; }
+
+        /* ── ANIMACIONES ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .reveal {
+            opacity: 0; animation: fadeUp 0.7s ease forwards;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 600px) {
+            header { padding: 1rem 1.2rem; }
+            nav a { margin-left: 0.8rem; font-size: 0.78rem; }
+            .form-card { padding: 2.5rem 1.8rem; }
+        }
     </style>
 </head>
 <body>
 
-<div class="auth-container">
-    <h2>Iniciar Sesión</h2>
-    
-    <!-- Spring Security envía un parámetro 'error' si las credenciales fallan -->
-    <div th:if="${param.error}" class="error">
-        Usuario o contraseña incorrectos.
-    </div>
+    <header>
+        <a href="/" class="logo">🌿 Eco<em>Wash</em></a>
+        <nav>
+            <a th:href="@{/}">Inicio</a>
+            <a th:href="@{/servicios}">Servicios</a>
+            <a th:href="@{/nosotros}">Nosotros</a>
+            <a th:href="@{/contacto}">Contacto</a>
+        </nav>
+    </header>
 
-    <!-- El action por defecto de Spring Security para el login es POST a /login -->
-    <form th:action="@{/login}" method="post">
-        <div class="form-group">
-            <label for="username">Correo:</label>
-            <input type="text" id="username" name="username" required />
+    <section class="auth-section">
+        <div class="form-card reveal">
+            <p class="section-label">Bienvenido de nuevo</p>
+            <h2 class="section-title">Inicia <em>Sesión</em></h2>
+            
+            <div th:if="${param.error}" class="error-msg">
+                <span>⚠️</span> Usuario o contraseña incorrectos.
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="field">
+                    <label for="username">Correo Electrónico</label>
+                    <input type="text" id="username" name="username" placeholder="Ej. correo@ejemplo.com" required autocomplete="email" />
+                </div>
+                <div class="field">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password" />
+                </div>
+                
+                <button type="submit" class="btn-enviar">
+                    Ingresar <span>→</span>
+                </button>
+            </form>
+            
+            <div class="links">
+                ¿No tienes una cuenta? <br><br> <a th:href="@{/registro}">Regístrate gratis aquí</a>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required />
-        </div>
-        <button type="submit">Ingresar</button>
-    </form>
-    
-    <div class="links">
-        <p>¿No tienes una cuenta? <a th:href="@{/registro}">Regístrate aquí</a></p>
-    </div>
-</div>
+    </section>
 
 </body>
 </html>
