@@ -1,0 +1,357 @@
+/* ==========================================================================
+   MODAL DE PERFIL DEL CLIENTE - ECOWASH
+   ========================================================================== */
+
+/* ── MODAL OVERLAY (Fondo oscuro y desenfoque) ── */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Usa el color --ink (#1a2218) con 60% de opacidad */
+    background: rgba(26, 34, 24, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+    /* Z-index extremo para asegurar que tape el header */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Estado inactivo por defecto */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+/* Estado Activo disparado por JavaScript */
+.modal-overlay.active {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* ── MODAL CONTENT (La tarjeta blanca) ── */
+.modal-content {
+    background: var(--white, #ffffff);
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    /* Scroll interno si hay muchas direcciones */
+    border-radius: 20px;
+    padding: 2.5rem;
+    position: relative;
+    border: 1px solid var(--border, #d4e3d8);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+
+    /* Animación de entrada de abajo hacia arriba */
+    transform: translateY(30px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+/* Botón de cerrar (X) */
+.close-modal {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--muted, #6b7f6e);
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+    line-height: 1;
+}
+
+.close-modal:hover {
+    color: var(--forest, #1e4d2b);
+    transform: scale(1.1);
+}
+
+/* ── TIPOGRAFÍA Y ENCABEZADOS ── */
+.modal-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.8rem;
+    color: var(--forest, #1e4d2b);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+.modal-title em {
+    font-style: italic;
+    color: var(--moss, #3a7d50);
+    font-weight: 300;
+}
+
+.modal-section {
+    background: var(--cream, #f5f0e8);
+    border: 1px solid var(--border, #d4e3d8);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.2rem;
+}
+
+.section-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--moss, #3a7d50);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    border-bottom: 1px dashed var(--border, #d4e3d8);
+    padding-bottom: 0.5rem;
+}
+
+/* ── INPUTS Y FORMULARIOS ── */
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    color: var(--muted, #6b7f6e);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+}
+
+.input-group input,
+.list-controls input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1.5px solid var(--border, #d4e3d8);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    background: var(--white, #ffffff);
+    color: var(--ink, #1a2218);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-group input:focus,
+.list-controls input:focus {
+    border-color: var(--moss, #3a7d50);
+    box-shadow: 0 0 0 3px rgba(58, 125, 80, 0.1);
+}
+
+/* ── LISTAS DINÁMICAS (Select múltiple) ── */
+.dynamic-list {
+    width: 100%;
+    border: 1.5px solid var(--border, #d4e3d8);
+    border-radius: 8px;
+    padding: 0.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    background: var(--white, #ffffff);
+    color: var(--ink, #1a2218);
+    outline: none;
+    margin-bottom: 0.8rem;
+}
+
+.dynamic-list option {
+    padding: 8px;
+    border-bottom: 1px solid var(--mist, #e8f2eb);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.dynamic-list option:checked {
+    background: var(--leaf, #5cb175);
+    color: var(--white, #ffffff);
+}
+
+/* ── BOTONES DE ACCIÓN ── */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 0.8rem;
+}
+
+.btn-action {
+    flex: 1;
+    padding: 0.6rem;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    color: white;
+    transition: transform 0.15s, filter 0.2s;
+}
+
+.btn-action:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.btn-action:active {
+    transform: translateY(1px);
+}
+
+.btn-action.add {
+    background: var(--moss, #3a7d50);
+}
+
+.btn-action.edit {
+    background: var(--muted, #6b7f6e);
+}
+
+.btn-action.delete {
+    background: #d9534f;
+}
+
+/* Rojo suave para borrar */
+
+/* Botón principal de guardar */
+.btn-save {
+    width: 100%;
+    padding: 0.85rem;
+    margin-top: 0.5rem;
+    background: var(--forest, #1e4d2b);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.btn-save:hover {
+    background: var(--leaf, #5cb175);
+    color: var(--forest, #1e4d2b);
+    transform: translateY(-2px);
+}
+
+/* Custom Scrollbar para el modal */
+.modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: var(--cream, #f5f0e8);
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: var(--muted, #6b7f6e);
+    border-radius: 10px;
+}
+
+/* ── CONTENEDOR DE CONTRASEÑA Y BOTONES ── */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    padding-right: 2.5rem;
+    /* Espacio para que el texto no pise el ícono */
+}
+
+/* Estado de input bloqueado (readonly) */
+.password-wrapper input[readonly] {
+    background-color: var(--mist, #e8f2eb);
+    color: var(--muted, #6b7f6e);
+    cursor: not-allowed;
+    border-color: var(--border, #d4e3d8);
+}
+
+.icon-btn {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--forest, #1e4d2b);
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.icon-btn:hover {
+    color: var(--moss, #3a7d50);
+    transform: scale(1.1);
+}
+
+/* Clase de utilidad para ocultar elementos fluidamente */
+.hidden {
+    display: none !important;
+}
+
+/* ── BOTON MI PERFIL ELEGANTE (Estilo Editorial) ── */
+.profile-btn-elegant {
+    margin-left: 1.4rem;
+    /* Mismo margen que tus enlaces nav a */
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    /* Un poco más grande para darle jerarquía */
+    font-weight: 600;
+    color: var(--forest, #1e4d2b);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    /* Alineación vertical para que no flote más arriba que los textos DM Sans */
+    vertical-align: middle;
+}
+
+.profile-btn-elegant em {
+    font-style: italic;
+    color: var(--moss, #3a7d50);
+    font-weight: 300;
+    margin-left: 4px;
+    transition: color 0.3s ease;
+}
+
+/* Efecto Hover sutil y orgánico */
+.profile-btn-elegant:hover {
+    transform: translateY(-2px);
+}
+
+.profile-btn-elegant:hover em {
+    color: var(--leaf, #5cb175);
+    /* Brillo sutil en la parte cursiva */
+}
+
+/* Ajuste al botón Salir para que mantenga alineación con el nuevo botón */
+.logout-form button {
+    vertical-align: middle;
+}
+
+/* CSS para que el botón de salir luzca como un enlace normal */
+.logout-form {
+    display: inline;
+    margin-left: 1.4rem;
+}
+
+.logout-form button {
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0;
+}
+
+.logout-form button:hover {
+    color: var(--forest);
+}

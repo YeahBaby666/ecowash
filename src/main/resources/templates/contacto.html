@@ -1,555 +1,943 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contacto — EcoWash</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300;1,9..144,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-  --ink:    #1a2218;
-  --forest: #1e4d2b;
-  --moss:   #3a7d50;
-  --leaf:   #5cb175;
-  --mist:   #e8f2eb;
-  --cream:  #f5f0e8;
-  --sand:   #ede8de;
-  --white:  #ffffff;
-  --muted:  #6b7f6e;
-  --border: #d4e3d8;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="_csrf" th:content="${_csrf.token}" />
+  <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+  <title>Contacto — EcoWash</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300;1,9..144,600&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/perfilModal.css}" />
+  <style>
+    :root {
+      --ink: #1a2218;
+      --forest: #1e4d2b;
+      --moss: #3a7d50;
+      --leaf: #5cb175;
+      --mist: #e8f2eb;
+      --cream: #f5f0e8;
+      --sand: #ede8de;
+      --white: #ffffff;
+      --muted: #6b7f6e;
+      --border: #d4e3d8;
+    }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--cream);
-  color: var(--ink);
-  overflow-x: hidden;
-}
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-/* ── HEADER ── */
-header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 1.1rem 2.5rem;
-  background: rgba(245,240,232,0.88);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-}
-.logo {
-  font-family: 'Fraunces', serif;
-  font-size: 1.5rem; font-weight: 700;
-  color: var(--forest); letter-spacing: -0.5px;
-}
-.logo em { font-style: italic; color: var(--moss); }
-nav a {
-  margin-left: 1.4rem; text-decoration: none;
-  font-size: 0.875rem; font-weight: 500;
-  color: var(--muted); transition: color 0.2s;
-}
-nav a:hover { color: var(--forest); }
+    html {
+      scroll-behavior: smooth;
+    }
 
-/* ── HERO ── */
-.hero {
-  min-height: 52vh;
-  padding-top: 72px;
-  background: var(--forest);
-  position: relative; overflow: hidden;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse at 10% 70%, rgba(92,177,117,0.18) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 10%, rgba(58,125,80,0.22) 0%, transparent 45%);
-}
-.hero-watermark {
-  font-family: 'Fraunces', serif;
-  font-size: 20rem; font-weight: 700; font-style: italic;
-  color: rgba(255,255,255,0.03);
-  position: absolute; bottom: -4rem; right: -3rem;
-  line-height: 1; pointer-events: none; user-select: none;
-}
-.hero-left {
-  position: relative; z-index: 2;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 5rem 3.5rem 5rem 5rem;
-}
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 0.75rem; font-weight: 500; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--leaf);
-  margin-bottom: 1.4rem;
-  opacity: 0; animation: fadeUp 0.7s 0.1s forwards;
-}
-.hero-eyebrow::before {
-  content: ''; display: inline-block;
-  width: 24px; height: 1.5px; background: var(--leaf);
-}
-.hero-title {
-  font-family: 'Fraunces', serif;
-  font-size: clamp(2.8rem, 4.5vw, 4rem);
-  font-weight: 700; line-height: 1.06;
-  color: white; letter-spacing: -1.5px;
-  margin-bottom: 1.2rem;
-  opacity: 0; animation: fadeUp 0.7s 0.25s forwards;
-}
-.hero-title em { font-style: italic; font-weight: 300; color: rgba(255,255,255,0.5); }
-.hero-sub {
-  font-size: 1rem; color: rgba(255,255,255,0.55);
-  line-height: 1.7; max-width: 400px;
-  opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
-}
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
 
-.hero-right {
-  position: relative; z-index: 2;
-  display: flex; flex-direction: column;
-  justify-content: center; gap: 1rem;
-  padding: 4rem 4rem 4rem 2rem;
-  opacity: 0; animation: fadeUp 0.7s 0.5s forwards;
-}
+    /* ── HEADER ── */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 2.5rem;
+      background: rgba(245, 240, 232, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
 
-.info-pill {
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 16px; padding: 1.3rem 1.6rem;
-  display: flex; align-items: center; gap: 1rem;
-  transition: background 0.25s, transform 0.25s;
-}
-.info-pill:hover { background: rgba(255,255,255,0.12); transform: translateX(6px); }
-.info-pill-icon {
-  width: 42px; height: 42px; flex-shrink: 0;
-  background: rgba(255,255,255,0.1);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem;
-}
-.info-pill-label {
-  font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase;
-  color: rgba(255,255,255,0.45); margin-bottom: 3px;
-}
-.info-pill-val {
-  font-size: 0.95rem; font-weight: 500; color: white;
-}
+    /* ── BOTON MI PERFIL ELEGANTE (Estilo Editorial) ── */
+    .profile-btn-elegant {
+      margin-left: 1.4rem;
+      /* Mismo margen que tus enlaces nav a */
+      background: transparent;
+      border: none;
+      padding: 0;
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      /* Un poco más grande para darle jerarquía */
+      font-weight: 600;
+      color: var(--forest, #1e4d2b);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      /* Alineación vertical para que no flote más arriba que los textos DM Sans */
+      vertical-align: middle;
+    }
 
-/* ── CONTACT SECTION ── */
-.contact-section {
-  padding: 6rem 5rem;
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 4rem;
-  align-items: start;
-}
+    .profile-btn-elegant em {
+      font-style: italic;
+      color: var(--moss, #3a7d50);
+      font-weight: 300;
+      margin-left: 4px;
+      transition: color 0.3s ease;
+    }
 
-/* FORM CARD */
-.form-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 2.8rem;
-  position: relative; overflow: hidden;
-}
-.form-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--leaf), var(--moss));
-}
+    /* Efecto Hover sutil y orgánico */
+    .profile-btn-elegant:hover {
+      transform: translateY(-2px);
+    }
 
-.section-label {
-  font-size: 0.72rem; font-weight: 500; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--moss);
-  margin-bottom: 0.7rem;
-}
-.section-title {
-  font-family: 'Fraunces', serif;
-  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
-  font-weight: 700; color: var(--forest);
-  letter-spacing: -1px; line-height: 1.1;
-  margin-bottom: 2rem;
-}
-.section-title em { font-style: italic; font-weight: 300; color: var(--moss); }
+    .profile-btn-elegant:hover em {
+      color: var(--leaf, #5cb175);
+      /* Brillo sutil en la parte cursiva */
+    }
 
-/* FIELDS */
-.field { margin-bottom: 1.2rem; }
-.field label {
-  display: block; font-size: 0.72rem; font-weight: 500;
-  color: var(--muted); margin-bottom: 0.45rem;
-  letter-spacing: 1.5px; text-transform: uppercase;
-}
-.field input, .field textarea {
-  width: 100%; padding: 0.8rem 1rem;
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
-  color: var(--ink); background: var(--cream); outline: none;
-  transition: border-color 0.2s, background 0.2s;
-}
-.field input:focus, .field textarea:focus {
-  border-color: var(--moss); background: var(--white);
-}
-.field input::placeholder, .field textarea::placeholder { color: #aabcb0; }
-.field textarea { resize: vertical; min-height: 130px; }
+    /* Ajuste al botón Salir para que mantenga alineación con el nuevo botón */
+    .logout-form button {
+      vertical-align: middle;
+    }
 
-.btn-enviar {
-  width: 100%; background: var(--forest); color: white;
-  border: none; padding: 1rem 1.5rem; border-radius: 50px;
-  font-size: 0.9rem; font-weight: 600;
-  font-family: 'DM Sans', sans-serif; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-  transition: background 0.2s, transform 0.2s;
-  margin-top: 0.5rem;
-}
-.btn-enviar:hover { background: var(--moss); transform: translateY(-2px); }
+    /* CSS para que el botón de salir luzca como un enlace normal */
+    .logout-form {
+      display: inline;
+      margin-left: 1.4rem;
+    }
 
-.success-msg {
-  display: none;
-  margin-top: 1rem;
-  padding: 0.9rem 1.2rem;
-  background: var(--mist);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  font-size: 0.88rem; color: var(--forest);
-  text-align: center;
-}
+    .logout-form button {
+      background: none;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.2s;
+      padding: 0;
+    }
 
-/* INFO LATERAL */
-.info-aside { display: flex; flex-direction: column; gap: 1.5rem; }
+    .logout-form button:hover {
+      color: var(--forest);
+    }
 
-.info-block {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 20px; padding: 2rem;
-  transition: transform 0.25s, box-shadow 0.25s;
-}
-.info-block:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(30,77,43,0.1); }
 
-.info-block-title {
-  font-family: 'Fraunces', serif;
-  font-size: 1.15rem; font-weight: 600;
-  color: var(--forest); margin-bottom: 1.2rem;
-}
 
-.info-item {
-  display: flex; align-items: flex-start; gap: 0.8rem;
-  padding: 0.6rem 0; border-bottom: 1px solid var(--border);
-}
-.info-item:last-child { border-bottom: none; }
-.info-icon {
-  width: 36px; height: 36px; flex-shrink: 0;
-  background: var(--mist); border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.95rem;
-}
-.info-text-label {
-  font-size: 0.72rem; font-weight: 500; letter-spacing: 1.5px;
-  text-transform: uppercase; color: var(--muted); margin-bottom: 2px;
-}
-.info-text-val { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--forest);
+      letter-spacing: -0.5px;
+    }
 
-/* REDES SOCIALES */
-.social-block {
-  background: var(--forest);
-  border-radius: 20px; padding: 2rem;
-  position: relative; overflow: hidden;
-}
-.social-block::before {
-  content: '🌿';
-  font-size: 7rem; position: absolute;
-  bottom: -1.5rem; right: -1rem; opacity: 0.1;
-  pointer-events: none;
-}
-.social-block-title {
-  font-family: 'Fraunces', serif;
-  font-size: 1.15rem; font-weight: 600;
-  color: white; margin-bottom: 1.1rem;
-}
-.social-links { display: flex; flex-direction: column; gap: 0.6rem; }
-.social-link {
-  display: flex; align-items: center; gap: 0.8rem;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px; padding: 0.75rem 1rem;
-  text-decoration: none; color: rgba(255,255,255,0.8);
-  font-size: 0.88rem; font-weight: 500;
-  transition: background 0.2s, transform 0.2s;
-}
-.social-link:hover { background: rgba(255,255,255,0.14); transform: translateX(4px); }
-.social-link-icon {
-  width: 30px; height: 30px; border-radius: 7px;
-  background: rgba(255,255,255,0.1);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.9rem; flex-shrink: 0;
-}
+    .logo em {
+      font-style: italic;
+      color: var(--moss);
+    }
 
-/* MAPA / STRIP FINAL */
-.map-strip {
-  background: var(--mist);
-  padding: 5rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem; align-items: center;
-}
-.map-strip-text .section-label { margin-bottom: 0.7rem; }
-.map-strip-text .section-title { margin-bottom: 1rem; }
-.map-strip-body {
-  font-size: 0.95rem; line-height: 1.75; color: var(--muted);
-  margin-bottom: 1.5rem;
-}
-.map-link {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  background: var(--forest); color: white;
-  padding: 0.8rem 1.6rem; border-radius: 50px;
-  text-decoration: none; font-size: 0.88rem; font-weight: 600;
-  transition: background 0.2s, transform 0.2s;
-}
-.map-link:hover { background: var(--moss); transform: translateY(-2px); }
+    nav a {
+      margin-left: 1.4rem;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
 
-.map-visual {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 20px; overflow: hidden;
-  height: 280px;
-  display: flex; align-items: center; justify-content: center;
-  flex-direction: column; gap: 1rem;
-  color: var(--muted); font-size: 0.9rem;
-  position: relative;
-}
-.map-placeholder-icon { font-size: 3.5rem; }
-.map-placeholder-text {
-  font-family: 'Fraunces', serif;
-  font-size: 1rem; font-weight: 600; color: var(--forest);
-}
-.map-placeholder-sub { font-size: 0.82rem; color: var(--muted); }
-.map-badge {
-  position: absolute; top: 1rem; right: 1rem;
-  background: var(--forest); color: white;
-  font-size: 0.72rem; font-weight: 500;
-  padding: 4px 10px; border-radius: 20px;
-  letter-spacing: 0.5px;
-}
+    nav a:hover {
+      color: var(--forest);
+    }
 
-/* FOOTER */
-footer {
-  text-align: center; padding: 2rem;
-  background: var(--ink); color: rgba(255,255,255,0.35);
-  font-size: 0.82rem;
-}
+    /* ── HERO ── */
+    .hero {
+      min-height: 52vh;
+      padding-top: 72px;
+      background: var(--forest);
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
 
-/* ANIMATIONS */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.reveal {
-  opacity: 0; transform: translateY(28px);
-  transition: opacity 0.65s ease, transform 0.65s ease;
-}
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 10% 70%, rgba(92, 177, 117, 0.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 10%, rgba(58, 125, 80, 0.22) 0%, transparent 45%);
+    }
 
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; min-height: auto; }
-  .hero-left { padding: 3.5rem 1.5rem; }
-  .hero-right { display: none; }
-  .contact-section { grid-template-columns: 1fr; padding: 3rem 1.5rem; gap: 2rem; }
-  .map-strip { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
-  header { padding: 1rem 1.2rem; }
-  nav a { margin-left: 0.8rem; font-size: 0.78rem; }
-}
-</style>
+    .hero-watermark {
+      font-family: 'Fraunces', serif;
+      font-size: 20rem;
+      font-weight: 700;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.03);
+      position: absolute;
+      bottom: -4rem;
+      right: -3rem;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-left {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 3.5rem 5rem 5rem;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--leaf);
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.1s forwards;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--leaf);
+    }
+
+    .hero-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.8rem, 4.5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.06;
+      color: white;
+      letter-spacing: -1.5px;
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.25s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.7;
+      max-width: 400px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.4s forwards;
+    }
+
+    .hero-right {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1rem;
+      padding: 4rem 4rem 4rem 2rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.5s forwards;
+    }
+
+    .info-pill {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.3rem 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: background 0.25s, transform 0.25s;
+    }
+
+    .info-pill:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateX(6px);
+    }
+
+    .info-pill-icon {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .info-pill-label {
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45);
+      margin-bottom: 3px;
+    }
+
+    .info-pill-val {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: white;
+    }
+
+    /* ── CONTACT SECTION ── */
+    .contact-section {
+      padding: 6rem 5rem;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    /* FORM CARD */
+    .form-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2.8rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--leaf), var(--moss));
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--moss);
+      margin-bottom: 0.7rem;
+    }
+
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      font-weight: 700;
+      color: var(--forest);
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 2rem;
+    }
+
+    .section-title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--moss);
+    }
+
+    /* FIELDS */
+    .field {
+      margin-bottom: 1.2rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 0.45rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--ink);
+      background: var(--cream);
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: var(--moss);
+      background: var(--white);
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: #aabcb0;
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .btn-enviar {
+      width: 100%;
+      background: var(--forest);
+      color: white;
+      border: none;
+      padding: 1rem 1.5rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: background 0.2s, transform 0.2s;
+      margin-top: 0.5rem;
+    }
+
+    .btn-enviar:hover {
+      background: var(--moss);
+      transform: translateY(-2px);
+    }
+
+    .success-msg {
+      display: none;
+      margin-top: 1rem;
+      padding: 0.9rem 1.2rem;
+      background: var(--mist);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.88rem;
+      color: var(--forest);
+      text-align: center;
+    }
+
+    /* INFO LATERAL */
+    .info-aside {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .info-block {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .info-block:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(30, 77, 43, 0.1);
+    }
+
+    .info-block-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--forest);
+      margin-bottom: 1.2rem;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-item:last-child {
+      border-bottom: none;
+    }
+
+    .info-icon {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      background: var(--mist);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+    }
+
+    .info-text-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .info-text-val {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* REDES SOCIALES */
+    .social-block {
+      background: var(--forest);
+      border-radius: 20px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-block::before {
+      content: '🌿';
+      font-size: 7rem;
+      position: absolute;
+      bottom: -1.5rem;
+      right: -1rem;
+      opacity: 0.1;
+      pointer-events: none;
+    }
+
+    .social-block-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 1.1rem;
+    }
+
+    .social-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .social-link:hover {
+      background: rgba(255, 255, 255, 0.14);
+      transform: translateX(4px);
+    }
+
+    .social-link-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    /* MAPA / STRIP FINAL */
+    .map-strip {
+      background: var(--mist);
+      padding: 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .map-strip-text .section-label {
+      margin-bottom: 0.7rem;
+    }
+
+    .map-strip-text .section-title {
+      margin-bottom: 1rem;
+    }
+
+    .map-strip-body {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .map-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--forest);
+      color: white;
+      padding: 0.8rem 1.6rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .map-link:hover {
+      background: var(--moss);
+      transform: translateY(-2px);
+    }
+
+    .map-visual {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      position: relative;
+    }
+
+    .map-placeholder-icon {
+      font-size: 3.5rem;
+    }
+
+    .map-placeholder-text {
+      font-family: 'Fraunces', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--forest);
+    }
+
+    .map-placeholder-sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .map-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--forest);
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: var(--ink);
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 0.82rem;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 {
+      transition-delay: 0.1s;
+    }
+
+    .reveal-delay-2 {
+      transition-delay: 0.2s;
+    }
+
+    .reveal-delay-3 {
+      transition-delay: 0.3s;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .hero-left {
+        padding: 3.5rem 1.5rem;
+      }
+
+      .hero-right {
+        display: none;
+      }
+
+      .contact-section {
+        grid-template-columns: 1fr;
+        padding: 3rem 1.5rem;
+        gap: 2rem;
+      }
+
+      .map-strip {
+        grid-template-columns: 1fr;
+        padding: 3rem 1.5rem;
+      }
+
+      header {
+        padding: 1rem 1.2rem;
+      }
+
+      nav a {
+        margin-left: 0.8rem;
+        font-size: 0.78rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="logo">🌿 Eco<em>Wash</em></div>
-  <nav>
-    <a th:href="@{/}">Inicio</a>
-    <a th:href="@{/nosotros}">Nosotros</a>
-    <a th:href="@{/login}">Iniciar Sesión</a>
-    <a th:href="@{/registro}">Registrarse</a>
-    <a th:href="@{/servicios}">Servicios</a>
-    <a th:href="@{/contacto}">Contacto</a>
-  </nav>
-</header>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">🌿 Eco<em>Wash</em></div>
+    
+    <nav>
+      <a th:href="@{/}">Inicio</a>
+      <a th:href="@{/nosotros}">Nosotros</a>
+      <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Iniciar Sesión</a>
+      <a th:href="@{/registro}" sec:authorize="!isAuthenticated()">Registrarse</a>
+      <a th:href="@{/servicios}">Servicios</a>
+      <a th:href="@{/contacto}">Contacto</a>
+      <button id="openProfileBtn" class="profile-btn-elegant" sec:authorize="isAuthenticated()">
+      Mi <em>Perfil</em>
+    </button>
+      <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" class="logout-form">
+        <button type="submit">Salir</button>
+      </form>
+    </nav>
+  </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-watermark">Hola</div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-watermark">Hola</div>
 
-  <div class="hero-left">
-    <span class="hero-eyebrow">Estamos aquí</span>
-    <h1 class="hero-title">¿Tienes alguna<br>duda? <em>Hablemos</em></h1>
-    <p class="hero-sub">Responde rápido. Escríbenos por el formulario, llámanos o encuéntranos en redes. Estamos disponibles de lunes a sábado.</p>
-  </div>
-
-  <div class="hero-right">
-    <div class="info-pill">
-      <div class="info-pill-icon">📞</div>
-      <div>
-        <div class="info-pill-label">Teléfono</div>
-        <div class="info-pill-val">+51 999 999 999</div>
-      </div>
+    <div class="hero-left">
+      <span class="hero-eyebrow">Estamos aquí</span>
+      <h1 class="hero-title">¿Tienes alguna<br>duda? <em>Hablemos</em></h1>
+      <p class="hero-sub">Responde rápido. Escríbenos por el formulario, llámanos o encuéntranos en redes. Estamos
+        disponibles de lunes a sábado.</p>
     </div>
-    <div class="info-pill">
-      <div class="info-pill-icon">✉️</div>
-      <div>
-        <div class="info-pill-label">Correo</div>
-        <div class="info-pill-val">contacto@ecowash.com</div>
-      </div>
-    </div>
-    <div class="info-pill">
-      <div class="info-pill-icon">📍</div>
-      <div>
-        <div class="info-pill-label">Ubicación</div>
-        <div class="info-pill-val">Lima, Perú</div>
-      </div>
-    </div>
-    <div class="info-pill">
-      <div class="info-pill-icon">🕐</div>
-      <div>
-        <div class="info-pill-label">Horario</div>
-        <div class="info-pill-val">Lun – Sáb, 8 AM – 7 PM</div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- CONTACTO PRINCIPAL -->
-<section class="contact-section">
-
-  <!-- FORMULARIO -->
-  <div class="form-card reveal">
-    <p class="section-label">Escríbenos</p>
-    <h2 class="section-title">Envíanos un<br><em>mensaje</em></h2>
-
-    <form onsubmit="enviarForm(event)">
-      <div class="field">
-        <label>Tu nombre</label>
-        <input type="text" placeholder="Ej. María García" required>
-      </div>
-      <div class="field">
-        <label>Correo electrónico</label>
-        <input type="email" placeholder="Ej. maria@correo.com" required>
-      </div>
-      <div class="field">
-        <label>Teléfono (opcional)</label>
-        <input type="tel" placeholder="Ej. 987 654 321">
-      </div>
-      <div class="field">
-        <label>Mensaje</label>
-        <textarea placeholder="¿En qué podemos ayudarte?" required></textarea>
-      </div>
-      <button type="submit" class="btn-enviar">
-        Enviar mensaje <span>→</span>
-      </button>
-      <div class="success-msg" id="successMsg">
-        ✅ ¡Mensaje enviado! Te respondemos en menos de 24 horas.
-      </div>
-    </form>
-  </div>
-
-  <!-- INFO LATERAL -->
-  <div class="info-aside">
-
-    <div class="info-block reveal reveal-delay-1">
-      <div class="info-block-title">📋 Información de contacto</div>
-      <div class="info-item">
-        <div class="info-icon">📞</div>
+    <div class="hero-right">
+      <div class="info-pill">
+        <div class="info-pill-icon">📞</div>
         <div>
-          <div class="info-text-label">Teléfono</div>
-          <div class="info-text-val">+51 999 999 999</div>
+          <div class="info-pill-label">Teléfono</div>
+          <div class="info-pill-val">+51 999 999 999</div>
         </div>
       </div>
-      <div class="info-item">
-        <div class="info-icon">✉️</div>
+      <div class="info-pill">
+        <div class="info-pill-icon">✉️</div>
         <div>
-          <div class="info-text-label">Correo electrónico</div>
-          <div class="info-text-val">contacto@ecowash.com</div>
+          <div class="info-pill-label">Correo</div>
+          <div class="info-pill-val">contacto@ecowash.com</div>
         </div>
       </div>
-      <div class="info-item">
-        <div class="info-icon">📍</div>
+      <div class="info-pill">
+        <div class="info-pill-icon">📍</div>
         <div>
-          <div class="info-text-label">Ubicación</div>
-          <div class="info-text-val">Lima, Perú — +15 distritos</div>
+          <div class="info-pill-label">Ubicación</div>
+          <div class="info-pill-val">Lima, Perú</div>
         </div>
       </div>
-      <div class="info-item">
-        <div class="info-icon">🕐</div>
+      <div class="info-pill">
+        <div class="info-pill-icon">🕐</div>
         <div>
-          <div class="info-text-label">Horario de atención</div>
-          <div class="info-text-val">Lunes a Sábado, 8 AM – 7 PM</div>
+          <div class="info-pill-label">Horario</div>
+          <div class="info-pill-val">Lun – Sáb, 8 AM – 7 PM</div>
         </div>
       </div>
     </div>
+  </section>
 
-    <div class="social-block reveal reveal-delay-2">
-      <div class="social-block-title">🌐 Síguenos en redes</div>
-      <div class="social-links">
-        <a href="#" class="social-link">
-          <div class="social-link-icon">📘</div>
-          Facebook — EcoWash Perú
-        </a>
-        <a href="#" class="social-link">
-          <div class="social-link-icon">📸</div>
-          Instagram — @ecowash.pe
-        </a>
-        <a href="#" class="social-link">
-          <div class="social-link-icon">💬</div>
-          WhatsApp — Escríbenos directo
-        </a>
-      </div>
+  <!-- CONTACTO PRINCIPAL -->
+  <section class="contact-section">
+
+    <!-- FORMULARIO -->
+    <div class="form-card reveal">
+      <p class="section-label">Escríbenos</p>
+      <h2 class="section-title">Envíanos un<br><em>mensaje</em></h2>
+
+      <form onsubmit="enviarForm(event)">
+        <div class="field">
+          <label>Tu nombre</label>
+          <input type="text" placeholder="Ej. María García" required>
+        </div>
+        <div class="field">
+          <label>Correo electrónico</label>
+          <input type="email" placeholder="Ej. maria@correo.com" required>
+        </div>
+        <div class="field">
+          <label>Teléfono (opcional)</label>
+          <input type="tel" placeholder="Ej. 987 654 321">
+        </div>
+        <div class="field">
+          <label>Mensaje</label>
+          <textarea placeholder="¿En qué podemos ayudarte?" required></textarea>
+        </div>
+        <button type="submit" class="btn-enviar">
+          Enviar mensaje <span>→</span>
+        </button>
+        <div class="success-msg" id="successMsg">
+          ✅ ¡Mensaje enviado! Te respondemos en menos de 24 horas.
+        </div>
+      </form>
     </div>
 
+    <!-- INFO LATERAL -->
+    <div class="info-aside">
+
+      <div class="info-block reveal reveal-delay-1">
+        <div class="info-block-title">📋 Información de contacto</div>
+        <div class="info-item">
+          <div class="info-icon">📞</div>
+          <div>
+            <div class="info-text-label">Teléfono</div>
+            <div class="info-text-val">+51 999 999 999</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">✉️</div>
+          <div>
+            <div class="info-text-label">Correo electrónico</div>
+            <div class="info-text-val">contacto@ecowash.com</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">📍</div>
+          <div>
+            <div class="info-text-label">Ubicación</div>
+            <div class="info-text-val">Lima, Perú — +15 distritos</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">🕐</div>
+          <div>
+            <div class="info-text-label">Horario de atención</div>
+            <div class="info-text-val">Lunes a Sábado, 8 AM – 7 PM</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="social-block reveal reveal-delay-2">
+        <div class="social-block-title">🌐 Síguenos en redes</div>
+        <div class="social-links">
+          <a href="#" class="social-link">
+            <div class="social-link-icon">📘</div>
+            Facebook — EcoWash Perú
+          </a>
+          <a href="#" class="social-link">
+            <div class="social-link-icon">📸</div>
+            Instagram — @ecowash.pe
+          </a>
+          <a href="#" class="social-link">
+            <div class="social-link-icon">💬</div>
+            WhatsApp — Escríbenos directo
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- STRIP CON MAPA -->
+  <section class="map-strip">
+    <div class="map-strip-text reveal">
+      <p class="section-label">Nuestra cobertura</p>
+      <h2 class="section-title">Llegamos a <em>toda Lima</em></h2>
+      <p class="map-strip-body">
+        Hacemos recojo y entrega en más de 15 distritos de Lima.
+        Sin costo adicional dentro de nuestra zona de cobertura.
+      </p>
+      <a href="/servicios" class="map-link">Ver zonas y reservar →</a>
+    </div>
+
+    <div class="map-visual reveal reveal-delay-1">
+      <div class="map-badge">+15 distritos</div>
+      <div class="map-placeholder-icon">🗺️</div>
+      <div class="map-placeholder-text">Lima, Perú</div>
+      <div class="map-placeholder-sub">Miraflores, San Isidro, Surco y más</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 EcoWash — Cuidando tu ropa y el planeta 🌿</p>
+  </footer>
+
+  <div sec:authorize="isAuthenticated()">
+    <div th:replace="~{fragments/perfilModal :: modal}"></div>
   </div>
-</section>
 
-<!-- STRIP CON MAPA -->
-<section class="map-strip">
-  <div class="map-strip-text reveal">
-    <p class="section-label">Nuestra cobertura</p>
-    <h2 class="section-title">Llegamos a <em>toda Lima</em></h2>
-    <p class="map-strip-body">
-      Hacemos recojo y entrega en más de 15 distritos de Lima. 
-      Sin costo adicional dentro de nuestra zona de cobertura.
-    </p>
-    <a href="/servicios" class="map-link">Ver zonas y reservar →</a>
-  </div>
+  <script th:src="@{/js/perfilModal.js}"></script>
 
-  <div class="map-visual reveal reveal-delay-1">
-    <div class="map-badge">+15 distritos</div>
-    <div class="map-placeholder-icon">🗺️</div>
-    <div class="map-placeholder-text">Lima, Perú</div>
-    <div class="map-placeholder-sub">Miraflores, San Isidro, Surco y más</div>
-  </div>
-</section>
+  <script>
+    function enviarForm(e) {
+      e.preventDefault();
+      document.getElementById('successMsg').style.display = 'block';
+      e.target.reset();
+    }
 
-<!-- FOOTER -->
-<footer>
-  <p>&copy; 2025 EcoWash — Cuidando tu ropa y el planeta 🌿</p>
-</footer>
-
-<script>
-function enviarForm(e) {
-  e.preventDefault();
-  document.getElementById('successMsg').style.display = 'block';
-  e.target.reset();
-}
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
-  });
-}, { threshold: 0.12 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
 </body>
+
 </html>
